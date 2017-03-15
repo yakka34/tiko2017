@@ -1,0 +1,55 @@
+Käyttäjän tietojen haku:
+	Lue id, nimi, opnro, paine relaatiosta Kayttaja
+	Lue rooli_id relaatiosta Roolit, jossa kayttaja_id on id
+	Lue nimi, kuvaus relaatiosta Rooli, jossa id on rooli_id
+
+	Tämän jälkeen tiedetään käyttäjän tiedot, roolit ja roolien nimet
+
+
+R1 - Yksittäisen session tietojen haku:
+	Lue kayttaja, tehtavalista_id relaatiosta Sessio
+	Lue id, nimi, opnro, paine relaatiosta Kayttaja
+	Lue rooli_id relaatiosta Roolit, jossa kayttaja_id on id
+	Lue nimi, kuvaus relaatiosta Rooli, jossa id on rooli_id
+	Lue rivien lukumäärä relaatiosta sessio_tehtava, jossa id on sessiotehtava_id ja vastaus_oikein on tosi
+
+	Tämän jälkeen tiedetään käyttäjän tiedot, roolit ja onnistuneiden tehtävien lukumäärä
+
+R2 - Tehtävälistään liittyvien sessioiden yhteenvetotiedot:
+	Lue aloitus, lopetus relaatiosta Sessio
+	Laske nopein, hitain ja keskimääräinen suoritusaika tulosriveistä
+
+R3 - Testisarjan yhteenvetotiedot tehtäväkohtaisesti
+	n := tehtävälistan ID
+	Lue tehtava_id relaatiosta Tehtavat, jossa lista_id on n
+		Lue kuvaus relaatiosta Tehtava
+		Lue aloitus, lopetus, vastaus_oikein relaatiosta Sessio_tehtava, jossa tehtava_id on Tehtavat.tehtava_id
+		Laske onnistumisprosentti ja keskimääräinen suoritusaika
+
+R4 - Tehtävälistaus vaikeusjärjestyksessä:
+	n := tehtävälistan ID
+	Lue tehtava_id relaatiosta Tehtavat, jossa lista_id on n
+		Lue id, aloitus, lopetus, vastaus_oikein relaatiosta Sessio_tehtava, jossa tehtava_id on Tehtavat.tehtava_id
+		Laske kulutettu aika
+	Laske keskimääräinen kulutettu aika per Tehtava, laske prosenttiosuus ratkaisemattomia
+
+
+Opiskelijakäyttäjän luominen:
+	k_id := SERIAL
+	opiskelija_rooli_id := 1	-- Esimerkki-ID
+	Talleta nimi, opnro, paine relaatioon Kayttaja
+	Talleta k_id, opiskelija_rooli_id relaatioon Roolit
+
+Opettajakäyttäjän luominen:
+	k_id := SERIAL
+	opettaja_rooli_id := 2		-- Esimerkki-ID
+	Talleta nimi relaatioon Kayttaja
+	Talleta k_id, opettaja_rooli_id relaatioon Roolit
+
+Pääkäyttäjän luominen:
+	k_id := SERIAL
+	admin_rooli_id := 2			-- Esimerkki-ID
+	Talleta nimi relaatioon Kayttaja
+	Talleta k_id, admin_rooli_id relaatioon Roolit
+
+
