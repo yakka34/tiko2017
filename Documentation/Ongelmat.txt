@@ -1,0 +1,5 @@
+1.Ei voida olettaa että käyttäjällä olisi opnro tai pääainetta, mutta opiskelija rooli vaatii nämä tiedot.
+
+2.Sql kysely palauttaa tulostaulun, tallennetaanko tulostaulu?(ja miten?).
+  Ajetaanko esimerkkikysely jokaisella yrityskerralla uusiksi ja verrataan tuloksia?
+  https://stackoverflow.com/questions/11017678/sql-server-compare-results-of-two-queries-that-should-be-identical
