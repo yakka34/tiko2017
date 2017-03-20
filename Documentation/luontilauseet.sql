@@ -1,6 +1,6 @@
 create table kayttaja(
   id SERIAL,
-  nimi varchar(100),
+  nimi varchar(100) not null,
   opnro int,
   paine varchar(100),
   primary key(id)
@@ -8,8 +8,8 @@ create table kayttaja(
 
 create table rooli(
   id SERIAL,
-  nimi varchar(100),
-  kuvaus varchar(500)
+  nimi varchar(100) not null,
+  kuvaus varchar(500) not null,
   primary key(id)
 );
 
@@ -23,20 +23,20 @@ create table roolit(
 
 create table tehtava(
   id SERIAL,
-  tekija_id int,
-  kuvaus varchar(500),
-  kyselytyyppi varchar(8),
-  pvm date,
-  esimvastaus varchar(1000),
+  tekija_id int not null,
+  kuvaus varchar(500) not null,
+  kyselytyyppi varchar(8) not null,
+  pvm date not null,
+  esimvastaus varchar(1000) not null,
   primary key(id),
   foreign key(tekija_id) references kayttaja(id)
 );
 
 create table tehtavalista(
   id SERIAL,
-  tekija_id int,
-  pvm date,
-  kuvaus varchar(500),
+  tekija_id int not null,
+  pvm date not null,
+  kuvaus varchar(500) not null,
   primary key(id),
   foreign key(tekija_id) references kayttaja(id)
 );
@@ -51,19 +51,19 @@ create table tehtavat(
 
 create table sessio_tehtava(
   id SERIAL,
-  tehtava_id int,
-  aloitus datetime,
-  lopetus datetime,
-  vastaus_oikein boolean,
+  tehtava_id int not null,
+  aloitus timestamp,
+  lopetus timestamp,
+  vastaus_oikein boolean not null,
   primary key(id),
   foreign key(tehtava_id) references tehtava(id)
 );
 
 create table tehtava_yritys(
   id SERIAL,
-  sessio_tehtava_id int,
-  aloitus datetime,
-  lopetus datetime,
+  sessio_tehtava_id int not null,
+  aloitus timestamp,
+  lopetus timestamp,
   vastaus varchar(1000),
   primary key(id),
   foreign key(sessio_tehtava_id) references sessio_tehtava(id)
@@ -71,11 +71,11 @@ create table tehtava_yritys(
 
 create table sessio(
   id SERIAL,
-  aloitus datetime,
-  lopetus datetime,
-  kayttaja_id int,
-  tehtavalista_id int,
-  sessio_tehtava_id int,
+  aloitus timestamp,
+  lopetus timestamp,
+  kayttaja_id int not null,
+  tehtavalista_id int not null,
+  sessio_tehtava_id int not null,
   primary key(id),
   foreign key(kayttaja_id) references kayttaja(id),
   foreign key(tehtavalista_id) references tehtavalista(id),
