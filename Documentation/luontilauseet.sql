@@ -51,7 +51,7 @@ create table tehtavat(
 
 create table sessio_tehtava(
   id SERIAL,
-  sessio_id id not null,
+  sessio_id int not null,
   tehtava_id int not null,
   aloitus timestamp,
   lopetus timestamp,
