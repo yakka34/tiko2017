@@ -51,12 +51,14 @@ create table tehtavat(
 
 create table sessio_tehtava(
   id SERIAL,
+  sessio_id id not null,
   tehtava_id int not null,
   aloitus timestamp,
   lopetus timestamp,
   vastaus_oikein boolean not null,
   primary key(id),
-  foreign key(tehtava_id) references tehtava(id)
+  foreign key(tehtava_id) references tehtava(id),
+  foreign key(sessio_id) references sessio(id)
 );
 
 create table tehtava_yritys(
@@ -75,9 +77,7 @@ create table sessio(
   lopetus timestamp,
   kayttaja_id int not null,
   tehtavalista_id int not null,
-  sessio_tehtava_id int not null,
   primary key(id),
   foreign key(kayttaja_id) references kayttaja(id),
   foreign key(tehtavalista_id) references tehtavalista(id),
-  foreign key(sessio_tehtava_id) references sessio_tehtava(id)
 );
