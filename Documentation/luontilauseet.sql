@@ -79,5 +79,5 @@ create table sessio(
   tehtavalista_id int not null,
   primary key(id),
   foreign key(kayttaja_id) references kayttaja(id),
-  foreign key(tehtavalista_id) references tehtavalista(id),
+  foreign key(tehtavalista_id) references tehtavalista(id)
 );
