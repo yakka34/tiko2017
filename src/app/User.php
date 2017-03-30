@@ -27,6 +27,15 @@ class User extends Authenticatable
         'password', 'remember_token', 'roles', 'id', 'updated_at'
     ];
 
+    public function hasRole($role){
+        foreach ($this->roles()->get() as $role_){
+            if ($role->name == $role_){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function roles(){
         return $this->belongsToMany('App\Role');
     }
