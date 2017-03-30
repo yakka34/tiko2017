@@ -8,7 +8,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    @yield('content')
+                    @yield('panel_content')
                 </div>
             </div>
         </div>

@@ -30,10 +30,13 @@ class HomeController extends Controller
         return view('home',compact('user'));
     }
 
-    public function roles(){
-        //Hakee tunnistautuneen käyttäjän roolit
-        $roles = Auth::user()->roles;
-        //Palautetaan roolit näkymälle
-        return view('roles',compact('roles'));
+    public function account(){
+        //Hakee tunnistautuneen käyttäjän
+        $user = Auth::user();
+        //Käyttäjän roolit
+        $roles = $user->roles;
+        //Molemmat tiedot välitetään näkymälle
+        return view('account', compact('user','roles'));
     }
+
 }
