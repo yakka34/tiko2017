@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Http\FormRequest;
+
+class AccountUpdateRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return Gate::allows('update-info');
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            //'name' => 'required|min:2',
+            'email' => 'required|email|min:2'
+        ];
+    }
+
+    public function persist() {
+        $user = Auth::user();
+
+        $user->email = $this->email;
+        // Jos käyttäjällä on oikeudet päivittää muutakin tietoa
+        if ($user->can('update-student-info')) {
+            $user->name = $this->name;
+            $user->studentId = $this->studentId;
+            $user->major = $this->major;
+        }
+
+        $user->save();
+    }
+}

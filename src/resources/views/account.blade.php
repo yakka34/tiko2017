@@ -1,41 +1,59 @@
 @extends('home')
 
 @section('panel_content')
-    <form>
-        <div class="form-group">
+    <form action="/account" method="post">
+        {{csrf_field()}}
+
+        <div class="form-group {{$errors->has('nameField') ? 'has-error' : ''}}">
             <label for="nameField">Nimi</label>
-            @if (Auth::user()->hasRole('admin'))
-                <input type="text" id="nameField" class="form-control" value="{{$user->name}}">
+            @if (Auth::user()->can('update-student-info'))
+                <input type="text" id="nameField" class="form-control" value="{{Auth::user()->name}}">
             @else
-                <input type="text" id="nameField" class="form-control" value="{{$user->name}}" disabled>
+                <input type="text" id="nameField" class="form-control" value="{{Auth::user()->name}}" disabled>
             @endif
+            {!! $errors->first('nameField', '<p class="help-block">:message</p>') !!}
         </div>
         <div class="form-group">
             <label for="studentIdField">Opiskelijanumero</label>
-            @if (Auth::user()->hasRole('admin'))
-                <input type="text" id="studentIdField" class="form-control" value="{{$user->opnro}}">
+            @if (Auth::user()->can('update-student-info'))
+                <input type="text" id="studentIdField" class="form-control" value="{{Auth::user()->opnro}}">
             @else
-                <input type="text" id="studentIdField" class="form-control" value="{{$user->opnro}}" disabled>
+                <input type="text" id="studentIdField" class="form-control" value="{{Auth::user()->opnro}}" disabled>
             @endif
         </div>
         <div class="form-group">
             <label for="majorField">Pääaine</label>
-            @if (Auth::user()->hasRole('admin'))
-                <input type="text" id="majorField" class="form-control" value="{{$user->major}}">
+            @if (Auth::user()->can('update-student-info'))
+                <input type="text" id="majorField" class="form-control" value="{{Auth::user()->major}}">
             @else
-                <input type="text" id="majorField" class="form-control" value="{{$user->major}}" disabled>
+                <input type="text" id="majorField" class="form-control" value="{{Auth::user()->major}}" disabled>
             @endif
         </div>
-        <div class="form-group">
-            <label for="emailField">Sähköposti</label>
-            <input type="text" id="emailField" class="form-control" value="{{$user->email}}">
+        <div class="form-group" {{$errors->has('email') ? 'has-error' : ''}}>
+            <label for="email">Sähköposti</label>
+            <input type="text" id="email" name="email" class="form-control" value="{{Auth::user()->email}}">
+            {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
         </div>
+
+        <button type="submit" class="btn btn-primary">Tallenna</button>
     </form>
-    <h1>Roolisi ovat:</h1>
+
+    Roolit ja oikeudet:
     <ul>
-        @foreach($roles as $role)
-            <li>{{$role->name}}</li>
-        @endforeach
+    @foreach (Auth::user()->roles as $role)
+        <li>
+            {{$role->name}}
+            <ul>
+                @foreach ($role->permissions as $permission)
+                    <li>{{$permission->name}}</li>
+                @endforeach
+            </ul>
+        </li>
+    @endforeach
     </ul>
+
+    @if (Auth::user()->can('update-info'))
+        <div>Voi päivittää tietoja</div>
+    @endif
 @stop
 
