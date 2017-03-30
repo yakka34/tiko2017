@@ -28,8 +28,8 @@ class User extends Authenticatable
     ];
 
     public function hasRole($role){
-        foreach ($this->roles()->get() as $role_){
-            if ($role->name == $role_){
+        foreach ($this->roles()->get() as $role_) {
+            if ($role_->name == $role) {
                 return true;
             }
         }
