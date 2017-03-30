@@ -8,7 +8,12 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    <h1>Roolisi ovat:</h1>
+                    <ul>
+                        @foreach($user->roles as $role)
+                            <li>{{$role->name}}</li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
