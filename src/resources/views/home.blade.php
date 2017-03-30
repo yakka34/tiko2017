@@ -8,12 +8,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    <h1>Roolisi ovat:</h1>
-                    <ul>
-                        @foreach($user->roles as $role)
-                            <li>{{$role->name}}</li>
-                        @endforeach
-                    </ul>
+                    @yield('content')
                 </div>
             </div>
         </div>

@@ -26,10 +26,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //Etsii tunnistautuneen käyttäjän ja lisää hänelle admin oikeudet
-        $user = User::find(Auth::user()->id);
-        $user->roles()->attach(1);
-        //Palautetaan käyttäjän tiedot home näkymään
+        $user = Auth::user();
         return view('home',compact('user'));
+    }
+
+    public function roles(){
+        //Hakee tunnistautuneen käyttäjän roolit
+        $roles = Auth::user()->roles;
+        //Palautetaan roolit näkymälle
+        return view('roles',compact('roles'));
     }
 }
