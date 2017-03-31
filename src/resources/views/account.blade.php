@@ -63,4 +63,18 @@
             </li>
         @endforeach
     </ul>
+    @if(count($roles) > 0)
+        <form class="form-group" action="{{route('add.role',$user->id)}}" method="post">
+            {{csrf_field()}}
+            <div>
+                <label for="roles">Lisää rooli käyttäjälle</label>
+                <select name="role" id="roles" class="form-group">
+                    @foreach($roles as $role)
+                        <option value="{{$role->id}}">{{$role->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Tallenna rooli</button>
+        </form>
+    @endif
 @stop

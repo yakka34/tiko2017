@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AccountUpdateRequest;
-use App\User;
+use App\Http\Requests\RoleUpdateRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\User;
+use App\Role;
 
 class AccountController extends Controller
 {
@@ -15,7 +17,8 @@ class AccountController extends Controller
     public function __construct() {
         // Vaadi käyttäjän todentaminen
         $this->middleware('auth');
-        $this->middleware('\App\Http\Middleware\CheckRole:admin')->only('show');    // show-metodi vaatii admin-roolin
+        $this->middleware('\App\Http\Middleware\CheckRole:admin')->only(['show','addRole','removeRole']);    // show-metodi vaatii admin-roolin
+        //$this->middleware('\App\Http\Middleware\CheckRole:admin')->only('addRole');
     }
 
     public function index() {
@@ -27,10 +30,26 @@ class AccountController extends Controller
 
     public function show($id) {
         $user = User::find($id);
+        $roles = Role::all()->diff($user->roles);
         return view('account', [
             'page_name' => $this->page_name,
-            'user' => $user
+            'user' => $user,
+            'roles' => $roles,
         ]);
+    }
+
+    public function addRole(RoleUpdateRequest $request, int $id){
+        $user = User::find($id);
+        $user->roles()->attach($request->role);
+        return back()->with('status','Rooli: ' . Role::find($request->role)->name . ' lisätty käyttäjälle');
+
+    }
+
+    public function removeRole(RoleUpdateRequest $request, int $id){
+        $user = User::find($id);
+        $user->roles()->detach($request->role);
+        return back()->with('status', 'Rooli: ' . Role::find($request->role)->name . ' poistettu käyttäjältä');
+
     }
 
     public function save(AccountUpdateRequest $request, int $id) {
