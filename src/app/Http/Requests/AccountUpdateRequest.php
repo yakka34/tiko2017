@@ -26,20 +26,25 @@ class AccountUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required',
-            'email' => 'required|email|min:2',
+            'email' => 'required|email|min:2'
         ];
+        if (Auth::user()->can('update-student-info')) {
+            $rules['studentId'] = 'required|min:2';
+            $rules['major'] = 'required|min:2';
+        }
+
+        return $rules;
     }
 
     public function persist($id) {
         $user = User::find($id);
-        //$user = Auth::user();
 
         $user->email = $this->email;
         $user->name = $this->name;
         // Jos käyttäjällä on oikeudet päivittää muutakin tietoa
-        if ($user->can('update-student-info')) {
+        if (Auth::user()->can('update-student-info')) {
             $user->studentId = $this->studentId;
             $user->major = $this->major;
         }

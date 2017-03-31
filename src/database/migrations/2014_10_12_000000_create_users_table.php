@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             //Opiskelijanumero
-            $table->integer("opnro")->unique()->nullable();
+            $table->integer("studentId")->unique()->nullable();
             //Pääaine
             $table->string("major")->nullable();
             $table->string('email')->unique();

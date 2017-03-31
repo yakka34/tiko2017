@@ -24,17 +24,17 @@
         <div class="form-group">
             <label for="studentIdField">Opiskelijanumero</label>
             @can ('update-student-info')
-                <input type="text" name="studentIdField" id="studentIdField" class="form-control" value="{{$user->opnro}}">
+                <input type="text" name="studentId" id="studentId" class="form-control" value="{{$user->studentId}}">
             @else
-                <input type="text" id="studentIdField" class="form-control" value="{{$user->opnro}}" disabled>
+                <input type="text" id="studentId" class="form-control" value="{{$user->studentId}}" disabled>
             @endcan
         </div>
         <div class="form-group">
             <label for="majorField">Pääaine</label>
             @can ('update-student-info')
-                <input type="text" name="majorField" id="majorField" class="form-control" value="{{$user->major}}">
+                <input type="text" name="major" id="major" class="form-control" value="{{$user->major}}">
             @else
-                <input type="text" id="majorField" class="form-control" value="{{$user->major}}" disabled>
+                <input type="text" id="major" class="form-control" value="{{$user->major}}" disabled>
             @endcan
         </div>
         <div class="form-group" {{$errors->has('email') ? 'has-error' : ''}}>
