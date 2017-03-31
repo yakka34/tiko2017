@@ -15,7 +15,7 @@ class AccountController extends Controller
     public function __construct() {
         // Vaadi käyttäjän todentaminen
         $this->middleware('auth');
-        //$this->middleware('\App\Http\Middleware\CheckRole:admin')->only('show');
+        $this->middleware('\App\Http\Middleware\CheckRole:admin')->only('show');    // show-metodi vaatii admin-roolin
     }
 
     public function index() {
@@ -26,16 +26,11 @@ class AccountController extends Controller
     }
 
     public function show($id) {
-        $authedUser = Auth::user();
-        if ($authedUser->hasRole('admin')) {
-            $user = User::find($id);
-            return view('account', [
-                'page_name' => $this->page_name,
-                'user' => $user
-            ]);
-        } else {
-            return back()->with('error', 'Ei oikeutta!');
-        }
+        $user = User::find($id);
+        return view('account', [
+            'page_name' => $this->page_name,
+            'user' => $user
+        ]);
     }
 
     public function save(AccountUpdateRequest $request, int $id) {
