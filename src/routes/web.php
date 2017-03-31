@@ -22,9 +22,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 
-Route::get('/account', 'AccountController@index');
+Route::get('/account', 'AccountController@index')->name('account');
 Route::get('/account/{id}', 'AccountController@show');
-Route::post('/account/{id}/update', 'AccountController@save');
+Route::post('/account/{id}/update', 'AccountController@save')->name('account.id.update');
 
 
 /*
