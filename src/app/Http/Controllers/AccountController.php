@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AccountUpdateRequest;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
@@ -13,15 +15,37 @@ class AccountController extends Controller
     public function __construct() {
         // Vaadi käyttäjän todentaminen
         $this->middleware('auth');
+        //$this->middleware('\App\Http\Middleware\CheckRole:admin')->only('show');
     }
 
     public function index() {
-        return view('account', ['page_name' => $this->page_name]);
+        return view('account', [
+            'page_name' => $this->page_name,
+            'user' => Auth::user()
+        ]);
     }
 
-    public function save(AccountUpdateRequest $request) {
-        $request->persist();
-        return back()->with('status', 'Tiedot päivitetty');
+    public function show($id) {
+        $authedUser = Auth::user();
+        if ($authedUser->hasRole('admin')) {
+            $user = User::find($id);
+            return view('account', [
+                'page_name' => $this->page_name,
+                'user' => $user
+            ]);
+        } else {
+            return back()->with('error', 'Ei oikeutta!');
+        }
+    }
+
+    public function save(AccountUpdateRequest $request, int $id) {
+        $user = Auth::user();
+        if ($user->hasRole('admin') || $user->id === $id) {
+            $request->persist();
+            return back()->with('status', 'Tiedot päivitetty');
+        } else {
+            return back()->with('error', 'Ei oikeutta!');
+        }
     }
 
 }
