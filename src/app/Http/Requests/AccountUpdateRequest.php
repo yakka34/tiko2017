@@ -27,7 +27,7 @@ class AccountUpdateRequest extends FormRequest
     {
         return [
             //'name' => 'required|min:2',
-            'email' => 'required|email|min:2'
+            'email' => 'required|email|min:2',
         ];
     }
 
@@ -35,9 +35,9 @@ class AccountUpdateRequest extends FormRequest
         $user = Auth::user();
 
         $user->email = $this->email;
+        $user->name = $this->name;
         // Jos käyttäjällä on oikeudet päivittää muutakin tietoa
         if ($user->can('update-student-info')) {
-            $user->name = $this->name;
             $user->studentId = $this->studentId;
             $user->major = $this->major;
         }
