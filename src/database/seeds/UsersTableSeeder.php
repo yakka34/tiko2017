@@ -22,7 +22,24 @@ class UsersTableSeeder extends Seeder
 
         // Luodaan pari opiskelijaa
         factory('App\User', 2)->create()->each(function ($u) {
+            $u->studentId = rand(100000, 999999);   // Arvo opiskelijanumero
+            $subjects = [
+                'Tietojenkäsittelytiede',
+                'Matematiikka ja tilastotiede',
+                'Informaatiotutkimus ja interaktiivinen media',
+                'Filosofia',
+                'Historia',
+                'Logopedia',
+                'Psykologia',
+                'Sosiaalityö',
+                'Yhteiskuntatutkimus',
+                'Hallintotieteet',
+                'Kauppatieteet',
+                'Kasvatustieteet'
+            ];
+            $u->major = $subjects[array_rand($subjects)];   // Arvo pääaine
             $u->roles()->attach(Role::find(3)); // Lisätään opiskelijan rooli
+            $u->save();
         });
 
         // Luodaan admin
