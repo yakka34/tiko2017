@@ -20,7 +20,16 @@ Auth::routes();
 //Esim parametreista middlewarelle
 //Route::get('/home', 'testi@index')->middleware('App\Http\Middleware\CheckRole:admin');
 Route::get('/home', 'HomeController@index');
-Route::get('/home/account', 'HomeController@account');
+
+
+Route::get('/account', 'AccountController@index');
+Route::get('/account/{id}', 'AccountController@show');
+Route::post('/account/{id}/update', 'AccountController@save');
+
+
+/*
+Route::get('/home/admin', 'adminController@index');
 
 Route::get('/account', 'AccountController@index');
 Route::post('/account', 'AccountController@save');
+*/
