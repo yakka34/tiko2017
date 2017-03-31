@@ -21,7 +21,7 @@ Auth::routes();
 //Route::get('/home', 'testi@index')->middleware('App\Http\Middleware\CheckRole:admin');
 Route::get('/home', 'HomeController@index');
 
-Route::get('/admin', 'adminController@index')->name('admin');
+Route::get('/admin', 'AdminController@index')->name('admin');
 
 Route::get('/account', 'AccountController@index')->name('account');
 Route::get('/account/{id}', 'AccountController@show')->name('show');
