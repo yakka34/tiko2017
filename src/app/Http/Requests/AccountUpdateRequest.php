@@ -26,7 +26,7 @@ class AccountUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //'name' => 'required|min:2',
+            'name' => 'required',
             'email' => 'required|email|min:2',
         ];
     }

@@ -7,11 +7,11 @@
         <div class="form-group {{$errors->has('nameField') ? 'has-error' : ''}}">
             <label for="nameField">Nimi</label>
             @can ('update-info')
-                <input type="text" name="name" id="nameField" class="form-control" value="{{Auth::user()->name}}">
+                <input type="text" name="name" id="name" class="form-control" value="{{Auth::user()->name}}">
             @else
-                <input type="text" id="nameField" class="form-control" value="{{Auth::user()->name}}" disabled>
+                <input type="text" id="name" class="form-control" value="{{Auth::user()->name}}" disabled>
             @endcan
-            {!! $errors->first('nameField', '<p class="help-block">:message</p>') !!}
+            {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
         </div>
         <div class="form-group">
             <label for="studentIdField">Opiskelijanumero</label>
