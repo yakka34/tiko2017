@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AccountUpdateRequest extends FormRequest
@@ -31,8 +32,9 @@ class AccountUpdateRequest extends FormRequest
         ];
     }
 
-    public function persist() {
-        $user = Auth::user();
+    public function persist($id) {
+        $user = User::find($id);
+        //$user = Auth::user();
 
         $user->email = $this->email;
         $user->name = $this->name;

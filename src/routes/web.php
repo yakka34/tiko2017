@@ -21,14 +21,15 @@ Auth::routes();
 //Route::get('/home', 'testi@index')->middleware('App\Http\Middleware\CheckRole:admin');
 Route::get('/home', 'HomeController@index');
 
+Route::get('/admin', 'adminController@index')->name('admin');
 
 Route::get('/account', 'AccountController@index')->name('account');
-Route::get('/account/{id}', 'AccountController@show');
+Route::get('/account/{id}', 'AccountController@show')->name('show');
 Route::post('/account/{id}/update', 'AccountController@save')->name('account.id.update');
 
 
 /*
-Route::get('/home/admin', 'adminController@index');
+
 
 Route::get('/account', 'AccountController@index');
 Route::post('/account', 'AccountController@save');

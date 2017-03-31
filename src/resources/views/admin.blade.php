@@ -3,7 +3,7 @@
 @section('panel_content')
     <ul>
     @foreach($users as $user)
-        <li> <a href="show/{{$user->id}}">{{$user}}</a>
+        <li> <a href="{{route('show',$user->id)}}">{{$user}}</a>
             <ul>
                 @foreach($user->roles as $role)
                     <li>

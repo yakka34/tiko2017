@@ -41,7 +41,7 @@ class AccountController extends Controller
     public function save(AccountUpdateRequest $request, int $id) {
         $user = Auth::user();
         if ($user->hasRole('admin') || $user->id === $id) {
-            $request->persist();
+            $request->persist($id);
             return back()->with('status', 'Tiedot päivitetty');
         } else {
             return back()->with('error', 'Ei oikeutta!');
