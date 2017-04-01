@@ -5,6 +5,10 @@
     @if (Auth::check())
         {{-- Käyttäjä on kirjautunut sisään --}}
         Terve, {{Auth::user()->name}}
+
+        {{-- Jos käyttäjä voi suorittaa tehtäviä, listataan tehtävälistat --}}
+        @include('home.tasklist')
+
     @else
         {{-- Käyttäjä ei ole kirjautunut sisään --}}
         <p>

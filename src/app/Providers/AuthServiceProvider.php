@@ -35,6 +35,15 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
+        $gate->define('update-student-info', function ($user) {
+            foreach ($user->roles as $role) {
+                if ($role->permissions->pluck('name')->contains('update-student-info')) {
+                    return true;
+                }
+            }
+            return false;
+        });
+
         $gate->define('update-role', function ($user) {
             foreach ($user->roles as $role) {
                 if ($role->permissions->pluck('name')->contains('update-role')) {
@@ -53,9 +62,9 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
-        $gate->define('update-student-info', function ($user) {
+        $gate->define('solve-task', function ($user) {
             foreach ($user->roles as $role) {
-                if ($role->permissions->pluck('name')->contains('update-student-info')) {
+                if ($role->permissions->pluck('name')->contains('solve-task')) {
                     return true;
                 }
             }
