@@ -27,8 +27,8 @@ Route::get('/admin', 'AdminController@index')->name('admin');
 Route::get('/account', 'AccountController@index')->name('account');
 Route::get('/account/{id}', 'AccountController@show')->name('show');
 Route::post('/account/{id}/update', 'AccountController@save')->name('account.id.update');
-Route::post('/account/{id}/addrole', 'AccountController@addRole')->name('add.role');
-Route::post('/account/{id}/removerole', 'AccountController@removeRole')->name('remove.role');
+Route::post('/admin/{id}/addrole', 'AdminController@addRole')->name('add.role');
+Route::post('/admin/{id}/removerole', 'AdminController@removeRole')->name('remove.role');
 
 /*
 
