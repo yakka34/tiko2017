@@ -13,7 +13,6 @@ class CreateTaskRequest extends FormRequest
      */
     public function authorize()
     {
-        dd(Gate::allows('create-task'));
         return Gate::allows('create-task');
     }
 

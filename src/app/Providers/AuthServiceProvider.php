@@ -46,7 +46,7 @@ class AuthServiceProvider extends ServiceProvider
 
         $gate->define('create-task', function ($user) {
             foreach ($user->roles as $role) {
-                if ($role->permissions->pluck('name')->contains('create-role')) {
+                if ($role->permissions->pluck('name')->contains('create-task')) {
                     return true;
                 }
             }
