@@ -64,12 +64,14 @@
                                             <a href="{{ route('admin') }}">Hallinta</a>
                                         </li>
                                     @endif
+                                    @if (Auth::user()->can('create-task'))
+                                        <li>
+                                            <a href="{{ route('missioncontrol') }}">Tehtävähallinta</a>
+                                        </li>
+                                    @endif
                                     <li>
                                         <a href="{{ route('account') }}">Omat tiedot</a>
                                     </li>
-                                        @if(Auth::user()->can('create-task'))
-                                        <li><a href="{{route('create.task')}}">Luo tehtävä</a> </li>
-                                        @endif
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

@@ -25,6 +25,12 @@ Route::get('/task/{id}','TaskController@show')->name('show.task');
 Route::post('/task/{id}','TaskController@update')->name('update.task');
 Route::post('/task','TaskController@save')->name('save.task');
 
+// "API routes" for user tasks and task lists
+Route::get('/user/tasks', 'UserController@tasks')->name('user.tasks');
+Route::get('/user/tasklists', 'UserController@tasklists')->name('user.tasklists');
+
+Route::get('/missioncontrol', 'TaskAndTasklistController@index')->name('missioncontrol');
+
 Route::get('/account', 'AccountController@index')->name('account');
 Route::get('/account/{id}', 'AccountController@show')->name('show');
 Route::post('/account/{id}/update', 'AccountController@save')->name('account.id.update');

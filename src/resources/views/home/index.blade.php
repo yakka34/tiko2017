@@ -7,7 +7,10 @@
         Terve, {{Auth::user()->name}}
 
         {{-- Jos käyttäjä voi suorittaa tehtäviä, listataan tehtävälistat --}}
-        @include('home.tasklist')
+        @if (Auth::user()->can('solve-task') and isset($tasklists))
+            <h3>Tehtävälistat</h3>
+            @include('home.tasklist')
+        @endif
 
     @else
         {{-- Käyttäjä ei ole kirjautunut sisään --}}
