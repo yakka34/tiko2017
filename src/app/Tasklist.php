@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Tasklist extends Model
 {
     //
-    public function tasks(){
+    public function tasks() {
         $this->belongsToMany(Task::class);
+    }
+
+    public function user() {
+        $this->belongsTo(User::class);
     }
 }

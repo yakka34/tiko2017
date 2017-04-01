@@ -18,6 +18,7 @@
                 <input type="text" name="name" id="name" class="form-control" value="{{$user->name}}">
             @else
                 <input type="text" id="name" class="form-control" value="{{$user->name}}" disabled>
+                <p class="help-block">Sinulla ei ole oikeutta muuttaa tätä tietoa</p>
             @endcan
             {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
         </div>
@@ -27,6 +28,7 @@
                 <input type="text" name="studentId" id="studentId" class="form-control" value="{{$user->studentId}}">
             @else
                 <input type="text" id="studentId" class="form-control" value="{{$user->studentId}}" disabled>
+                <p class="help-block">Sinulla ei ole oikeutta muuttaa tätä tietoa</p>
             @endcan
         </div>
         <div class="form-group">
@@ -35,6 +37,7 @@
                 <input type="text" name="major" id="major" class="form-control" value="{{$user->major}}">
             @else
                 <input type="text" id="major" class="form-control" value="{{$user->major}}" disabled>
+                <p class="help-block">Sinulla ei ole oikeutta muuttaa tätä tietoa</p>
             @endcan
         </div>
         <div class="form-group" {{$errors->has('email') ? 'has-error' : ''}}>
@@ -43,6 +46,7 @@
                 <input type="text" id="email" name="email" class="form-control" value="{{$user->email}}">
             @else
                 <input type="text" id="email" name="email" class="form-control" value="{{$user->email}}" disabled>
+                <p class="help-block">Sinulla ei ole oikeutta muuttaa tätä tietoa</p>
             @endcan
             {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
         </div>
@@ -77,4 +81,17 @@
             <button type="submit" class="btn btn-primary">Tallenna rooli</button>
         </form>
     @endif
+
+    @can ('create-task')
+        <h3>Luodut tehtävät</h3>
+        <ul>
+        @forelse ($user->tasks as $task)
+            {{-- TODO: Tähän linkki tehtävän muokkaamiseen --}}
+            <li>Tehtävä {{$task->id}}, {{$task->created_at}}</li>
+        @empty
+            <p>Ei luotuja tehtäviä</p>
+        @endforelse
+        </ul>
+    @endcan
+
 @stop
