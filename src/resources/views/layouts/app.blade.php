@@ -59,6 +59,11 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    @if (Auth::user()->hasRole('admin'))
+                                        <li>
+                                            <a href="{{ route('admin') }}">Hallinta</a>
+                                        </li>
+                                    @endif
                                     <li>
                                         <a href="{{ route('account') }}">Omat tiedot</a>
                                     </li>
