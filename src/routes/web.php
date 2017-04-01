@@ -20,8 +20,10 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/admin', 'AdminController@index')->name('admin');
 
-Route::get('/createtask','TaskController@createTask')->name('create.task');
-Route::post('/createtask','TaskController@save')->name('save.task');
+Route::get('/task','TaskController@createTask')->name('create.task');
+Route::get('/task/{id}','TaskController@show')->name('show.task');
+Route::post('/task/{id}','TaskController@update')->name('update.task');
+Route::post('/task','TaskController@save')->name('save.task');
 
 Route::get('/account', 'AccountController@index')->name('account');
 Route::get('/account/{id}', 'AccountController@show')->name('show');

@@ -20,6 +20,22 @@ class TaskController extends Controller
         }
         return back()->with('status','Ei oikeutta luoda tehtävää');
     }
+    public function show($id){
+        if (Auth::user()->can('create-task')){
+            $task = Task::find($id);
+            return view('task',['page_name' =>'Muokkaa tehtävää', 'task'=>$task]);
+        }
+        return back()->with('error','Ei oikeutta muokata tehtävää');
+    }
+
+    public function update(CreateTaskRequest $request, $id){
+        $task = Task::find($id);
+        $task->description = $request->description;
+        $task->type = $request->type;
+        $task->answer = $request->answer;
+        $task->save();
+        return back()->with('status','Tehtävää muokattu');
+    }
 
     public function save(CreateTaskRequest $request){
         Task::create([
@@ -30,4 +46,5 @@ class TaskController extends Controller
         ]);
         return back()->with('status','Tehtävä luotu');
     }
+
 }
