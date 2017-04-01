@@ -1,6 +1,10 @@
 @extends('home')
 
 @section('panel_content')
+    <div>
+        <b><a href="{{ route('home') }}">&larr; Takaisin etusivulle</a></b>
+    </div>
+    <hr />
     <ul>
         @foreach($users as $user)
             <li><a href="{{route('show',$user->id)}}">{{$user->name}}</a>
