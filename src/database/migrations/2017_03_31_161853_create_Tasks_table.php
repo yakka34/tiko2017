@@ -16,7 +16,7 @@ class CreateTasksTable extends Migration
         //
         Schema::create('tasks',function (Blueprint $table){
             $table->increments('id');
-            $table->string('author');
+            $table->integer('author')->references('id')->on('users');
             $table->text('description');
             //update,insert,delete jne.
             $table->string('type');
@@ -26,7 +26,7 @@ class CreateTasksTable extends Migration
 
         Schema::create('tasklists',function (Blueprint $table){
             $table->increments('id');
-            $table->string('author');
+            $table->integer('author')->references('id')->on('users');;
             $table->timestamps();
             $table->text('description');
         });

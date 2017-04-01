@@ -21,7 +21,7 @@ class TaskController extends Controller
         Task::create([
             'description' => $request->description,
             'type' => $request->type,
-            'author' => Auth::user()->name,
+            'author' => Auth::user()->id,
             'answer' => $request->answer,
         ]);
         return back()->with('status','Tehtävä luotu');
