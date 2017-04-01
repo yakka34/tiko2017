@@ -16,7 +16,7 @@ Auth::routes();
 //Esim parametreista middlewarelle
 //Route::get('/home', 'testi@index')->middleware('App\Http\Middleware\CheckRole:admin');
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/admin', 'AdminController@index')->name('admin');
 
