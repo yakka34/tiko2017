@@ -31,8 +31,8 @@ class AccountUpdateRequest extends FormRequest
             'email' => 'required|email|min:2'
         ];
         if (Auth::user()->can('update-student-info')) {
-            $rules['studentId'] = 'required|min:2';
-            $rules['major'] = 'required|min:2';
+            $rules['studentId'] = 'nullable|min:2';
+            $rules['major'] = 'nullable|min:2';
         }
 
         return $rules;

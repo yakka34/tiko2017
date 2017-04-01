@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Role;
 use App\User;
+use App\Http\Requests\RoleUpdateRequest;
 use Illuminate\Http\Request;
 
 class adminController extends Controller
