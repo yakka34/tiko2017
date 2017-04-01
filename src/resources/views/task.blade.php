@@ -2,7 +2,8 @@
 @section('panel_content')
     <script src="//cloud.tinymce.com/stable/tinymce.min.js"></script>
     <script>tinymce.init({ selector:'textarea', plugins:'image'});</script>
-    <form action="/" method="post">
+    <form action="{{route('save.task')}}" method="post">
+        {{csrf_field()}}
         <div class="form-group">
             <label for="description">Tehtävän kuvaus</label>
             <textarea class="form-control" name="description" id="description"></textarea>
@@ -11,7 +12,8 @@
             <label for="type">Valitse kyselytyyppi</label>
             <select class="form-control" name="type" id="type">
                 <option value="update">update</option>
-                <option value="drop">drop</option>
+                <option value="select">select</option>
+                <option value="delete">delete</option>
                 <option value="insert">insert</option>
             </select>
         </div>

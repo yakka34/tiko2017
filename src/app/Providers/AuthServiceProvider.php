@@ -44,6 +44,15 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
+        $gate->define('create-task', function ($user) {
+            foreach ($user->roles as $role) {
+                if ($role->permissions->pluck('name')->contains('create-role')) {
+                    return true;
+                }
+            }
+            return false;
+        });
+
         $gate->define('update-student-info', function ($user) {
             foreach ($user->roles as $role) {
                 if ($role->permissions->pluck('name')->contains('update-student-info')) {

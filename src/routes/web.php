@@ -21,6 +21,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/admin', 'AdminController@index')->name('admin');
 
 Route::get('/createtask','TaskController@createTask');
+Route::post('/createtask','TaskController@save')->name('save.task');
 
 Route::get('/account', 'AccountController@index')->name('account');
 Route::get('/account/{id}', 'AccountController@show')->name('show');

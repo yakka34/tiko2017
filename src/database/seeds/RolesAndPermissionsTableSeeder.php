@@ -42,9 +42,13 @@ class RolesAndPermissionsTableSeeder extends Seeder
             'name' => 'update-role',
             'description' => 'Voi päivittää käyttäjän rooleja'
         ]);
+        Permission::create([
+            'name' => 'create-task',
+            'description' => 'Voi luoda uusia tehtäviä'
+        ]);
 
         Role::first()->permissions()->attach(Permission::all()->pluck('id'));   // Admin-rooli saa kaikki oikeudet
-        Role::find(2)->permissions()->attach([1, 2]);   // Teacher-rooli saa update-infon ja update-student-infon
+        Role::find(2)->permissions()->attach([1, 2, 4]);   // Teacher-rooli saa update-infon ja update-student-infon
         Role::find(3)->permissions()->attach(Permission::find(1));  // Student-rooli saa update-infon
 
     }
