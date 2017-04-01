@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Role;
 use App\User;
+use App\Http\Requests\RoleUpdateRequest;
 use Illuminate\Http\Request;
 
 class adminController extends Controller
@@ -21,5 +22,19 @@ class adminController extends Controller
             ['users' => $users,
             'page_name' => $this->page_name,
             ]);
+    }
+
+    public function addRole(RoleUpdateRequest $request, int $id){
+        $user = User::find($id);
+        $user->roles()->attach($request->role);
+        return back()->with('status','Rooli: ' . Role::find($request->role)->name . ' lisätty käyttäjälle');
+
+    }
+
+    public function removeRole(RoleUpdateRequest $request, int $id){
+        $user = User::find($id);
+        $user->roles()->detach($request->role);
+        return back()->with('status', 'Rooli: ' . Role::find($request->role)->name . ' poistettu käyttäjältä');
+
     }
 }

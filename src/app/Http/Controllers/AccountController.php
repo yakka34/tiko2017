@@ -17,7 +17,7 @@ class AccountController extends Controller
     public function __construct() {
         // Vaadi käyttäjän todentaminen
         $this->middleware('auth');
-        $this->middleware('\App\Http\Middleware\CheckRole:admin')->only(['show','addRole','removeRole']);    // show-metodi vaatii admin-roolin
+        $this->middleware('\App\Http\Middleware\CheckRole:admin')->only(['show']);    // show-metodi vaatii admin-roolin
         //$this->middleware('\App\Http\Middleware\CheckRole:admin')->only('addRole');
     }
 
@@ -38,19 +38,6 @@ class AccountController extends Controller
         ]);
     }
 
-    public function addRole(RoleUpdateRequest $request, int $id){
-        $user = User::find($id);
-        $user->roles()->attach($request->role);
-        return back()->with('status','Rooli: ' . Role::find($request->role)->name . ' lisätty käyttäjälle');
-
-    }
-
-    public function removeRole(RoleUpdateRequest $request, int $id){
-        $user = User::find($id);
-        $user->roles()->detach($request->role);
-        return back()->with('status', 'Rooli: ' . Role::find($request->role)->name . ' poistettu käyttäjältä');
-
-    }
 
     public function save(AccountUpdateRequest $request, int $id) {
         $user = Auth::user();
