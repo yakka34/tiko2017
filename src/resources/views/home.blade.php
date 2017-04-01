@@ -1,30 +1,18 @@
-@extends('layouts.app')
+@extends('base')
 
-@section('content')
-<div class="container">
-    <div class="row">
+@section('panel_content')
 
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{session('error')}}
-            </div>
-        @endif
+    @if (Auth::check())
+        {{-- Käyttäjä on kirjautunut sisään --}}
+        Terve, {{Auth::user()->name}}
+    @else
+        {{-- Käyttäjä ei ole kirjautunut sisään --}}
+        <p>
+            Et ole kirjautunut sisään.
+        </p>
+        <p>
+            Kirjaudu sisään tai luo tunnus oikeasta yläkulmasta.
+        </p>
+    @endif
 
-        @if(session('status'))
-            <div class="alert alert-info">
-                {{session('status')}}
-            </div>
-        @endif
-
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h2>{{ $page_name or 'Sivu' }}</h2></div>
-
-                <div class="panel-body">
-                    @yield('panel_content')
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+@stop

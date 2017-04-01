@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+
+    protected $page_name = 'Tervetuloa';
+
     /**
      * Create a new controller instance.
      *
@@ -16,7 +19,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /**
@@ -26,8 +29,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        return view('home',compact('user'));
+        return view('home', ['page_name' => $this->page_name]);
     }
 
     public function account(){
