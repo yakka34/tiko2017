@@ -31,19 +31,19 @@ class TaskController extends Controller
 
     public function update(CreateTaskRequest $request, $id){
         $task = Task::find($id);
-        $task->description = $request->description;
-        $task->type = $request->type;
-        $task->answer = $request->answer;
+        $task->description = htmlspecialchars($request->description);
+        $task->type = strip_tags($request->type);
+        $task->answer = strip_tags($request->answer);
         $task->save();
         return back()->with('status','Tehtävää muokattu');
     }
 
     public function save(CreateTaskRequest $request){
         Task::create([
-            'description' => $request->description,
-            'type' => $request->type,
+            'description' => htmlspecialchars($request->description),
+            'type' => strip_tags($request->type),
             'user_id' => Auth::user()->id,
-            'answer' => $request->answer,
+            'answer' => strip_tags($request->answer),
         ]);
         return back()->with('status','Tehtävä luotu');
     }

@@ -86,8 +86,7 @@
         <h3>Luodut tehtävät</h3>
         <ul>
         @forelse ($user->tasks as $task)
-            {{-- TODO: Tähän linkki tehtävän muokkaamiseen --}}
-            <li>Tehtävä {{$task->id}}, {{$task->created_at}}</li>
+            <li><a href="{{route('show.task',$task->id)}}">Tehtävä {{$task->id}}, {{$task->created_at}}</a></li>
         @empty
             <p>Ei luotuja tehtäviä</p>
         @endforelse
