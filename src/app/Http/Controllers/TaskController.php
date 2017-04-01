@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateTaskRequest;
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -18,10 +19,11 @@ class TaskController extends Controller
 
     public function save(CreateTaskRequest $request){
         Task::create([
-            $request->description,
-            $request->type,
-            $request->answer,
+            'description' => $request->description,
+            'type' => $request->type,
+            'author' => Auth::user()->name,
+            'answer' => $request->answer,
         ]);
-        return back()-with('status','Tehtävä luotu');
+        return back()->with('status','Tehtävä luotu');
     }
 }

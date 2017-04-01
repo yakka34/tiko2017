@@ -20,14 +20,14 @@ class CreateTasksTable extends Migration
             $table->text('description');
             //update,insert,delete jne.
             $table->string('type');
-            $table->date('date');
+            $table->timestamps();
             $table->string('answer');
         });
 
         Schema::create('tasklists',function (Blueprint $table){
             $table->increments('id');
             $table->string('author');
-            $table->date('date');
+            $table->timestamps();
             $table->text('description');
         });
 
