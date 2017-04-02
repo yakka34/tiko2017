@@ -30,6 +30,7 @@ Route::get('/user/tasks', 'UserController@tasks')->name('user.tasks');
 Route::get('/user/tasklists', 'UserController@tasklists')->name('user.tasklists');
 
 Route::get('/missioncontrol', 'TaskAndTasklistController@index')->name('missioncontrol');
+Route::post('/missioncontrol/tasklist/create', 'TaskAndTasklistController@saveTasklist');
 
 Route::get('/account', 'AccountController@index')->name('account');
 Route::get('/account/{id}', 'AccountController@show')->name('show');

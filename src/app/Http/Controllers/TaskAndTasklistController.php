@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTasklistRequest;
+use App\Tasklist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -24,6 +26,21 @@ class TaskAndTasklistController extends Controller
             'tasklists' => Auth::user()->tasklists,
             'tasks' => Auth::user()->tasks
         ]);
+    }
+
+    public function saveTasklist(CreateTasklistRequest $request) {
+        if (Auth::user()->cant('create-task')) {
+            return ['status' => 'fail', 'message' => 'Ei oikeutta!'];
+        }
+        $tasklist = Tasklist::create([
+            'description' => htmlspecialchars($request->description),
+            'user_id' => Auth::user()->id
+        ]);
+
+        // Liitä tehtävät tehtävälistaan
+        $tasklist->tasks()->attach($request->tasks);
+
+        return ["status" => "ok", "tasklist" => $tasklist];
     }
 
     public function tasks() {

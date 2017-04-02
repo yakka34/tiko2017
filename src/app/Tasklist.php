@@ -6,12 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tasklist extends Model
 {
-    //
+
+    protected $fillable = [
+        'description',
+        'user_id'
+    ];
+
     public function tasks() {
-        $this->belongsToMany(Task::class);
+        return $this->belongsToMany(Task::class);
     }
 
     public function user() {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
