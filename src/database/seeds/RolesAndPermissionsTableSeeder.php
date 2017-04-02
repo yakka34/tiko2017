@@ -52,7 +52,7 @@ class RolesAndPermissionsTableSeeder extends Seeder
         ]);
 
         Role::first()->permissions()->attach(Permission::all()->pluck('id'));   // Admin-rooli saa kaikki oikeudet
-        Role::find(2)->permissions()->attach([1, 2, 4]);   // Teacher-rooli saa update-infon, update-student-infon ja create-taskin
+        Role::find(2)->permissions()->attach([1, 2, 4, 5]);   // Teacher-rooli saa update-infon, update-student-infon ja create-taskin
         Role::find(3)->permissions()->attach([1, 5]);  // Student-rooli saa update-infon ja solve-taskin
 
     }
