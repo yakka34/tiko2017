@@ -4,7 +4,13 @@
 
     @if (Auth::check())
         {{-- Käyttäjä on kirjautunut sisään --}}
-        Terve, {{Auth::user()->name}}
+        <div>Terve, {{Auth::user()->name}}!</div>
+
+        <div>
+            <p>
+                Tarkista mahdolliset toiminnot oikean yläkulman valikosta.
+            </p>
+        </div>
 
         {{-- Jos käyttäjä voi suorittaa tehtäviä, listataan tehtävälistat --}}
         @if (Auth::user()->can('solve-task') and isset($tasklists))
