@@ -3,7 +3,7 @@
     @if(isset($tasklist))
 
         <div>
-            <a href="/">&larr; Takaisin</a>
+            <a href="{{ route('home') }}">&larr; Takaisin</a>
         </div>
 
         <div class="panel panel-default">
