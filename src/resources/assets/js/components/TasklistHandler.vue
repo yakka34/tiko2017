@@ -81,6 +81,10 @@
         record(errors) {
             this.errors = errors;
         }
+
+        clear() {
+            this.errors = {};
+        }
     }
 
     export default {
@@ -141,6 +145,12 @@
                 .then(resp => {
                     this.create = false;
                     this.tasklists.push(resp.data.tasklist);
+                    // Tyhjennä kentät
+                    this.description = '';
+                    this.availableTasks = this.tasks;
+                    this.selectedTask = 0;
+                    this.selectedTasks = [];
+                    this.errors.clear();
                 })
                 .catch(err => {
                     this.errors.record(err.response.data);
