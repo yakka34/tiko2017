@@ -1,7 +1,5 @@
 @extends('base')
 @section('panel_content')
-    <script src="//cloud.tinymce.com/stable/tinymce.min.js"></script>
-    <script>tinymce.init({ selector:'textarea', plugins:'image',invalid_elements: 'script'});</script>
     <form action="@if(isset($task)){{route('update.task',$task->id)}}@else{{route('save.task')}}@endif" method="post">
         {{csrf_field()}}
         <div class="form-group">

@@ -19,6 +19,8 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+    <script src="//cloud.tinymce.com/stable/tinymce.min.js"></script>
+    <script>tinymce.init({ selector:'textarea', plugins:'image',invalid_elements: 'script'});</script>
 </head>
 <body>
     <div id="app">
