@@ -4,27 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTaskRequest;
 use App\Task;
+use App\Tasklist;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    protected $page_name = 'Luo uusi tehtävä';
-    //
+
     public function createTask(){
         if (Auth::user()->can('create-task')){
             return view('task',[
-                'page_name' => $this->page_name,
+                'page_name' => 'Luo uusi tehtävä',
             ]);
         }
         return back()->with('error','Ei oikeutta luoda tehtävää');
     }
 
-    public function show($id){
+    public function show(int $tasklistId, int $id){
         $task = Task::find($id);
-        if($task != null){
-            return view('showtask',['page_name' => 'Tehtävä sivu', 'task' => $task]);
+        if ($task != null){
+            return view('showtask',[
+                'page_name' => 'Tehtävä',
+                'task' => $task,
+                'tasklist' => $tasklistId
+            ]);
         }
         return back()->with('error','Tehtävää ei ole olemassa');
     }

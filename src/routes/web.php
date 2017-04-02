@@ -20,18 +20,19 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/admin', 'AdminController@index')->name('admin');
 
-Route::get('/task/{id}','TaskController@show')->name('show.task');
 Route::get('/task','TaskController@createTask')->name('create.task');
 Route::get('/task/{id}/edit','TaskController@edit')->name('edit.task');
 Route::post('/task/{id}/edit','TaskController@update')->name('update.task');
 Route::post('/task','TaskController@save')->name('save.task');
 
-
-
 Route::get('/tasklist/{id}','TaskAndTasklistController@show')->name('show.tasklist');
+Route::get('/tasklist/{tasklistId}/task/{id}', 'TaskController@show')->name('show.task');
+
 // "API routes" for user tasks and task lists
-Route::get('/user/tasks', 'UserController@tasks')->name('user.tasks');
-Route::get('/user/tasklists', 'UserController@tasklists')->name('user.tasklists');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/user/tasks', 'UserController@tasks')->name('user.tasks');
+    Route::get('/user/tasklists', 'UserController@tasklists')->name('user.tasklists');
+});
 
 Route::get('/missioncontrol', 'TaskAndTasklistController@index')->name('missioncontrol');
 Route::post('/missioncontrol/tasklist/create', 'TaskAndTasklistController@saveTasklist');

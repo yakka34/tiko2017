@@ -31,7 +31,7 @@ class TaskAndTasklistController extends Controller
     public function show($id){
         $tasklist = Tasklist::find($id);
         if($tasklist != null){
-            return view('tasklist',['page_name' => $this->page_name,'tasklist'=>$tasklist]);
+            return view('tasklist',['page_name' => 'Tehtävälista', 'tasklist'=>$tasklist]);
         }
         return back('error','Tehtävälistaa ei ole olemassa');
     }
