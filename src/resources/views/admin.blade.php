@@ -7,7 +7,7 @@
     <hr />
     <ul>
         @foreach($users as $user)
-            <li><a href="{{route('show',$user->id)}}">{{$user->name}}</a>
+            <li><a href="{{route('edit.task',$user->id)}}">{{$user->name}}</a>
                 <ul>
                     @if(isset($user->studentId))
                         <li>Opnro: {{$user->studentId}}</li>

@@ -20,7 +20,16 @@ class TaskController extends Controller
         }
         return back()->with('error','Ei oikeutta luoda tehtävää');
     }
+
     public function show($id){
+        $task = Task::find($id);
+        if($task != null){
+            return view('showtask',['page_name' => 'Tehtävä sivu', 'task' => $task]);
+        }
+        return back()->with('error','Tehtävää ei ole olemassa');
+    }
+
+    public function edit($id){
         if (Auth::user()->can('create-task')){
             $task = Task::find($id);
             if ($task == null) return back()->with('error', 'Tehtävää ei ole olemassa');
