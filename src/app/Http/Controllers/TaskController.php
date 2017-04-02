@@ -30,8 +30,9 @@ class TaskController extends Controller
     }
 
     public function update(CreateTaskRequest $request, $id){
+        $description = $this->filter_html($request->description);
         $task = Task::find($id);
-        $task->description = htmlspecialchars($request->description);
+        $task->description = $description;
         $task->type = strip_tags($request->type);
         $task->answer = strip_tags($request->answer);
         $task->save();
@@ -39,13 +40,19 @@ class TaskController extends Controller
     }
 
     public function save(CreateTaskRequest $request){
+        $description = $this->filter_html($request->description);
         Task::create([
-            'description' => htmlspecialchars($request->description),
+            'description' => $description,
             'type' => strip_tags($request->type),
             'user_id' => Auth::user()->id,
             'answer' => strip_tags($request->answer),
         ]);
         return back()->with('status','Tehtävä luotu');
+    }
+
+    private function filter_html($html) {
+        return strip_tags($html,
+            '<b><i><div><span><table><tr><td><th><tbody><img><p><h1><h2><h3><h4><h5><h6><br><ul><li><ol><strong><em><sup><sub><code><pre><blockquote>');
     }
 
 }
