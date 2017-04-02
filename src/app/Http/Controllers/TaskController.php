@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     protected $page_name = 'Luo uusi tehtävä';
     //
     public function createTask(){
