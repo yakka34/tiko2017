@@ -1,7 +1,7 @@
 <template>
     <ul v-if="tasks.length > 0">
         <li v-for="task in tasks">
-            Tehtävä {{task.id}}, luotu {{task.created_at}}
+            <a v-bind:href="taskUrl(task.id)">Tehtävä {{task.id}}, luotu {{task.created_at}}</a>
         </li>
     </ul>
     <div v-else-if="tasks.length === 0">
@@ -20,6 +20,12 @@
 
         mounted() {
             axios.get('/user/tasks').then(resp => this.tasks = resp.data);
+        },
+
+        methods: {
+            taskUrl(id) {
+                return '/task/' + id + '/edit';
+            }
         }
     }
 </script>

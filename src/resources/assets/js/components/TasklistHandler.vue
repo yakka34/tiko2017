@@ -2,7 +2,9 @@
     <div>
         <div>
             <ul v-if="tasklists.length > 0">
-                <li v-for="tasklist in tasklists">{{ tasklist.description }}</li>
+                <li v-for="tasklist in tasklists">
+                    <a v-bind:href="tasklistUrl(tasklist.id)">Tehtävälista {{ tasklist.id }}, luotu {{ tasklist.created_at }}</a>
+                </li>
             </ul>
             <div v-else-if="tasklists.length === 0">
                 <p>Ei tehtävälistoja</p>
@@ -155,6 +157,10 @@
                 .catch(err => {
                     this.errors.record(err.response.data);
                 });
+            },
+
+            tasklistUrl(id) {
+                return '/tasklist/' + id;
             }
 
         }
