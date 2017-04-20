@@ -2,8 +2,13 @@
 @section('panel_content')
     @if(isset($task))
 
-        @if (isset($tasklist))
-            <a href="{{ route('show.tasklist', $tasklist) }}">&larr; Takaisin tehtävälistaan</a>
+        @if (isset($session))
+            <a href="{{ route('session.show.tasklist', $session) }}">&larr; Takaisin tehtävälistaan</a>
+            <div>
+                <a href="{{ $previous }}">&larr; Edellinen</a>
+                <a href="{{ $next }}">&rarr; Seuraava</a>
+            </div>
+
         @endif
 
         <h3>Tehtävä {{$task->id}}</h3>

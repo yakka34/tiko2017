@@ -19,5 +19,10 @@
                 <li><a href="{{route('show.task',[$tasklist->id, $task->id])}}">Tehtävä {{ $task->id }}</a> </li>
             @endforeach
         </ul>
+        <!-- TODO:Lopeta sessio vain jos tehtävät on suoritettu joka hylätysti tai onnistuneesti -->
+        @if(isset($session))
+            <a class="btn btn-primary" href="{{route('session.stop',$session)}}">Lopeta sessio</a>
+        @endif
     @endif
+
 @stop

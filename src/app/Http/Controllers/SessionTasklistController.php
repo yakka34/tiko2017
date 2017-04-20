@@ -21,7 +21,11 @@ class SessionTasklistController extends Controller
         $user = Auth::user();
         if($session != null && $session->user_id == $user->id && $session->finished_at == null){
             $tasklist = Tasklist::find($session->tasklist_id);
-            return view('tasklist', ['page_name' => 'Session tehtävälista','tasklist' => $tasklist]);
+            return view('tasklist', [
+                'page_name' => 'Session tehtävälista',
+                'tasklist' => $tasklist,
+                'session' => $session->id,
+            ]);
         }
         return back()->with('error','Sessiota ei ole olemassa tai sinulla ei ole oikeuksia nähdä sitä');
     }
@@ -30,13 +34,12 @@ class SessionTasklistController extends Controller
         $session = Session::find($session);
         $tasklist = Tasklist::find($tasklist);
         $task = Task::find($task);
-        //TODO: Muokkaa näkymä näyttämään edellinen ja seuraava.
         return view('showtask',[
             'page_name' => 'Sessio tehtävä',
             'previous' => $this->previous($tasklist,$task,$session),
             'next' => $this->next($tasklist,$task,$session),
             'task' => $task,
-            'tasklist' => $tasklist->id,
+            'session' => $session->id,
         ]);
 
     }
