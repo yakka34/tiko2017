@@ -8,6 +8,7 @@ use App\Task;
 use App\Tasklist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SessionTasklistController extends Controller
 {
@@ -35,7 +36,7 @@ class SessionTasklistController extends Controller
         $session = Session::find($session);
         $tasklist = Tasklist::find($tasklist);
         $task = Task::find($task);
-        return view('showtask',[
+        return view('session.task',[
             'page_name' => 'Sessio tehtävä',
             'previous' => $this->previous($tasklist,$task,$session),
             'next' => $this->next($tasklist,$task,$session),
@@ -46,7 +47,9 @@ class SessionTasklistController extends Controller
     }
 
     public function answer(TaskAnswerRequest $request,$session,$tasklist,$task){
-
+        $task = Task::find($task);
+        $query = 'select * from users;';
+        dd($query);
     }
 
     private function previous($tasklist,$task,$session){
