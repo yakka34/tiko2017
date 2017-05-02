@@ -32,7 +32,7 @@ Route::get('/tasklist/{tasklistId}/task/{id}', 'TaskController@show')->name('sho
 Route::get("/session/{tasklist_id}/start","SessionController@start")->name('session.start');
 Route::get("/session/{session_id}/tasklist","SessionTasklistController@index")->name('session.show.tasklist');
 Route::get("/session/{session_id}/tasklist/{tasklist_id}/task/{task_id}","SessionTasklistController@show")->name('session.show.task');
-//Route::post("/session/{session_id}/tasklist/{tasklist_id}/task/{task_id}","SessionTasklistController@answer")->name('session.answer.task');
+Route::post("/session/{session_id}/tasklist/{tasklist_id}/task/{task_id}","SessionTasklistController@answer")->name('session.answer.task');
 Route::get("/session/{session_id}/stop","SessionController@stop")->name('session.stop');
 // </session routes>
 

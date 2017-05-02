@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskAnswerRequest;
 use App\Session;
 use App\Task;
 use App\Tasklist;
@@ -21,7 +22,7 @@ class SessionTasklistController extends Controller
         $user = Auth::user();
         if($session != null && $session->user_id == $user->id && $session->finished_at == null){
             $tasklist = Tasklist::find($session->tasklist_id);
-            return view('tasklist', [
+            return view('session.tasklist', [
                 'page_name' => 'Session tehtävälista',
                 'tasklist' => $tasklist,
                 'session' => $session->id,
@@ -41,6 +42,10 @@ class SessionTasklistController extends Controller
             'task' => $task,
             'session' => $session->id,
         ]);
+
+    }
+
+    public function answer(TaskAnswerRequest $request,$session,$tasklist,$task){
 
     }
 
