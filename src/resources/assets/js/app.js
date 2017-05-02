@@ -13,6 +13,7 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('tinymce', require('./components/TinyMCE.vue'));
 Vue.component('tasks', require('./components/TaskList.vue'));
 Vue.component('tasklisthandler', require('./components/TasklistHandler.vue'));
 

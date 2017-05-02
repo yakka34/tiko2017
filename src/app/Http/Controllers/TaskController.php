@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateTaskRequest;
 use App\Task;
 use App\Tasklist;
+use App\Utils\HTMLHelper;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,16 +64,11 @@ class TaskController extends Controller
         $description = $this->filter_html($request->description);
         Task::create([
             'description' => $description,
-            'type' => strip_tags($request->type),
+            'type' => HTMLHelper::filter_bad_tags($request->type),
             'user_id' => Auth::user()->id,
             'answer' => strip_tags($request->answer),
         ]);
         return back()->with('status','Tehtävä luotu');
-    }
-
-    private function filter_html($html) {
-        return strip_tags($html,
-            '<b><i><div><span><table><tr><td><th><tbody><img><p><h1><h2><h3><h4><h5><h6><br><ul><li><ol><strong><em><sup><sub><code><pre><blockquote>');
     }
 
 }

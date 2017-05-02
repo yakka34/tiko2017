@@ -4,7 +4,7 @@
         {{csrf_field()}}
         <div class="form-group">
             <label for="description">Tehtävän kuvaus</label>
-            <textarea class="form-control" name="description" id="description" rows="8">
+            <textarea class="form-control editor" name="description" id="description" rows="8">
                 @if(isset($task->description))
                     {{$task->description}}
                 @endif

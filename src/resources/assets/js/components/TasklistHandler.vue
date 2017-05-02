@@ -20,7 +20,7 @@
 
                     <div class="form-group" v-bind:class="{ 'has-error': errors.has('description') }">
                         <label for="description">Tehtävälistan kuvaus</label>
-                        <textarea class="form-control" name="description" id="description" rows="5" v-model="description"></textarea>
+                        <tinymce name="description" id="description" v-on:content-updated="updateDescription"></tinymce>
                         <p v-if="errors.has('description')" class="help-block" v-text="errors.get('description')"></p>
                     </div>
 
@@ -120,7 +120,6 @@
 
             startCreate() {
                 this.create = true;
-                window.tinymce.init({ selector:'textarea', plugins:'image',invalid_elements: 'script'});
             },
 
             taskSelected() {
@@ -161,6 +160,10 @@
 
             tasklistUrl(id) {
                 return '/tasklist/' + id;
+            },
+
+            updateDescription(content) {
+                this.description = content;
             }
 
         }

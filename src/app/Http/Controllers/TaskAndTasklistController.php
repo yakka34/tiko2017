@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTasklistRequest;
 use App\Tasklist;
+use App\Utils\HTMLHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -41,7 +42,7 @@ class TaskAndTasklistController extends Controller
             return ['status' => 'fail', 'message' => 'Ei oikeutta!'];
         }
         $tasklist = Tasklist::create([
-            'description' => htmlspecialchars($request->description),
+            'description' => HTMLHelper::filter_bad_tags($request->description),
             'user_id' => Auth::user()->id
         ]);
 
