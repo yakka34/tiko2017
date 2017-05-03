@@ -8,6 +8,7 @@ use App\Sessiontask;
 use App\Task;
 use App\Taskattempt;
 use App\Tasklist;
+use App\Utils\SandboxedDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -65,16 +66,20 @@ class SessionTasklistController extends Controller
 
     public function answer(TaskAnswerRequest $request,$session,$tasklist,$task){
         $task = Task::find($task);
-        $sessiontask = Sessiontask::find(['session_id' => $session, 'task_id' => $task->id])->last();
+        $sessiontask = Sessiontask::where(['session_id' => $session, 'task_id' => $task->id])->get()->last();
         $taskattempt = Taskattempt::where(['sessiontask_id' => $sessiontask->id])->get();
         if(count($taskattempt) >= 3 && $taskattempt->last()->finished_at != null){
             $sessiontask->finished_at = Carbon::now();
             $sessiontask->save();
             return back()->with('error','Kolme yritystä käytetty');
         }
-        try{
-            $query = DB::select($request->input('query'));
-            $answer = DB::select($task->answer);
+        try {
+
+            $sess = Session::find($session);
+            $sess->sandboxedDB = new SandboxedDatabase($sess);
+
+            $query = $sess->sandboxedDB->runSelect($request->input('query'), false); // false parametrina jos ajetaan käyttäjän kysely
+            $answer = $sess->sandboxedDB->runSelect($task->answer, true);    // true parametrina jos tarkistetaan
             $taskattempt->last()->finished_at = Carbon::now();
             $taskattempt->last()->answer = $request->input('query');
             $taskattempt->last()->save();

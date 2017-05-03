@@ -67,6 +67,33 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'task_sandbox_mysql' => [
+            'driver' => 'mysql',
+            'host' => env('DB_TASK_HOST', '127.0.0.1'),
+            'port' => env('DB_TASK_PORT', '3306'),
+            'database' => env('DB_TASK_DATABASE', 'task_sandbox'),
+            'username' => env('DB_TASK_USERNAME', 'task_sandbox'),
+            'password' => env('DB_TASK_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
+        'task_sandbox_pgsql' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_TASK_HOST', '127.0.0.1'),
+            'port' => env('DB_TASK_PORT', '5432'),
+            'database' => env('DB_TASK_DATABASE', 'task_sandbox'),
+            'username' => env('DB_TASK_USERNAME', 'task_sandbox'),
+            'password' => env('DB_TASK_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
     ],
 
     /*
