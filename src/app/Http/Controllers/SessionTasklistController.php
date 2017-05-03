@@ -89,6 +89,9 @@ class SessionTasklistController extends Controller
                 $sessiontask->save();
                 return back()->with('status','Oikein meni!');
             }
+
+            // TODO: Palauta edellinen tietokannan tilanne epäonnistuneen kyselyn jälkeen
+
             return back()->with('error' ,'Väärä vastaus');
         }
         catch (QueryException $e){
