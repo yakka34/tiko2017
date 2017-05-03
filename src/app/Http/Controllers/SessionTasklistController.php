@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskAnswerRequest;
 use App\Session;
+use App\Sessiontask;
 use App\Task;
 use App\Tasklist;
 use Illuminate\Http\Request;
@@ -36,20 +37,31 @@ class SessionTasklistController extends Controller
         $session = Session::find($session);
         $tasklist = Tasklist::find($tasklist);
         $task = Task::find($task);
+        $sessiontask = Sessiontask::firstOrCreate(['session_id' => $session->id, 'task_id' => $task->id]);
         return view('session.task',[
             'page_name' => 'Sessio tehtävä',
             'previous' => $this->previous($tasklist,$task,$session),
             'next' => $this->next($tasklist,$task,$session),
             'task' => $task,
             'session' => $session->id,
+            //'finished' => $sessiontask->finished_at,
         ]);
 
     }
 
     public function answer(TaskAnswerRequest $request,$session,$tasklist,$task){
         $task = Task::find($task);
-        $query = 'select * from users;';
-        dd($query);
+        try{
+            $query = DB::select($request->input('query'));
+            $answer = DB::select($task->answer);
+            if($query == $answer){
+                return back()->with('status','Oikein meni!');
+            }
+            return back()->with('error' ,'Väärä vastaus');
+        }
+        catch (\Illuminate\Database\QueryException $e){
+            return back()->with('error','SQL-kysely virheellinen');
+        }
     }
 
     private function previous($tasklist,$task,$session){

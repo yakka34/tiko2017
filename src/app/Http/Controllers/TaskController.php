@@ -51,7 +51,7 @@ class TaskController extends Controller
     }
 
     public function update(CreateTaskRequest $request, $id){
-        $description = $this->filter_html($request->description);
+        $description =HTMLHelper::filter_bad_tags($request->description);
         $task = Task::find($id);
         $task->description = $description;
         $task->type = strip_tags($request->type);
@@ -61,7 +61,7 @@ class TaskController extends Controller
     }
 
     public function save(CreateTaskRequest $request){
-        $description = $this->filter_html($request->description);
+        $description = HTMLHelper::filter_bad_tags($request->description);
         Task::create([
             'description' => $description,
             'type' => HTMLHelper::filter_bad_tags($request->type),

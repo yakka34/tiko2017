@@ -14,11 +14,19 @@ class CreateSessionsTable extends Migration
     public function up()
     {
         Schema::create('sessions', function (Blueprint $table) {
+        $table->increments('id');
+        $table->timestamp('finished_at')->nullable();
+        $table->integer('user_id');
+        $table->integer('tasklist_id');
+        $table->timestamps();
+    });
+        Schema::create('sessiontasks', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('finished_at')->nullable();
-            $table->integer('user_id');
-            $table->integer('tasklist_id');
+            $table->integer('task_id');
+            $table->integer('session_id');
             $table->timestamps();
+            $table->timestamp('finished_at')->nullable();
+            $table->boolean('correct')->nullable();
         });
     }
 
@@ -30,5 +38,6 @@ class CreateSessionsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('sessiontasks');
     }
 }
