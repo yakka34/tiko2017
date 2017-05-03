@@ -12,4 +12,8 @@ class Sessiontask extends Model
     public function session(){
         return $this->belongsTo(Session::class);
     }
+
+    public function taskattempts(){
+        return $this->belongsToMany(Taskattempt::class);
+    }
 }

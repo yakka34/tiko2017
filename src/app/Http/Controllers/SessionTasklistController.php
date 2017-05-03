@@ -6,7 +6,10 @@ use App\Http\Requests\TaskAnswerRequest;
 use App\Session;
 use App\Sessiontask;
 use App\Task;
+use App\Taskattempt;
 use App\Tasklist;
+use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,28 +41,52 @@ class SessionTasklistController extends Controller
         $tasklist = Tasklist::find($tasklist);
         $task = Task::find($task);
         $sessiontask = Sessiontask::firstOrCreate(['session_id' => $session->id, 'task_id' => $task->id]);
+        if($sessiontask->correct || count(Taskattempt::where('sessiontask_id', $sessiontask->id)->get()) >= 3){
+            //TODO Estä tehtävän tekeminen käyttöliittymässä.
+            //TODO Mitä tehdä kun tehtävä on suoritettu tai yritykset käytetty?
+            return view('session.task',[
+                'page_name' => 'Sessio tehtävä',
+                'previous' => $this->previous($tasklist,$task,$session),
+                'next' => $this->next($tasklist,$task,$session),
+                'task' => $task,
+                'session' => $session->id,
+            ])->with('status','Tehtävä suoritettu');
+        }
+        Taskattempt::firstOrCreate(['sessiontask_id' => $sessiontask->id, 'finished_at' => null]);
         return view('session.task',[
             'page_name' => 'Sessio tehtävä',
             'previous' => $this->previous($tasklist,$task,$session),
             'next' => $this->next($tasklist,$task,$session),
             'task' => $task,
             'session' => $session->id,
-            //'finished' => $sessiontask->finished_at,
         ]);
 
     }
 
     public function answer(TaskAnswerRequest $request,$session,$tasklist,$task){
         $task = Task::find($task);
+        $sessiontask = Sessiontask::find(['session_id' => $session, 'task_id' => $task->id])->last();
+        $taskattempt = Taskattempt::where(['sessiontask_id' => $sessiontask->id])->get();
+        if(count($taskattempt) >= 3 && $taskattempt->last()->finished_at != null){
+            $sessiontask->finished_at = Carbon::now();
+            $sessiontask->save();
+            return back()->with('error','Kolme yritystä käytetty');
+        }
         try{
             $query = DB::select($request->input('query'));
             $answer = DB::select($task->answer);
+            $taskattempt->last()->finished_at = Carbon::now();
+            $taskattempt->last()->answer = $request->input('query');
+            $taskattempt->last()->save();
             if($query == $answer){
+                $sessiontask->correct = true;
+                $sessiontask->finished_at = Carbon::now();
+                $sessiontask->save();
                 return back()->with('status','Oikein meni!');
             }
             return back()->with('error' ,'Väärä vastaus');
         }
-        catch (\Illuminate\Database\QueryException $e){
+        catch (QueryException $e){
             return back()->with('error','SQL-kysely virheellinen');
         }
     }

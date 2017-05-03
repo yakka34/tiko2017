@@ -28,6 +28,13 @@ class CreateSessionsTable extends Migration
             $table->timestamp('finished_at')->nullable();
             $table->boolean('correct')->nullable();
         });
+        Schema::create('taskattempts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('sessiontask_id');
+            $table->timestamps();
+            $table->timestamp('finished_at')->nullable();
+            $table->string('answer')->nullable();
+        });
     }
 
     /**
@@ -39,5 +46,6 @@ class CreateSessionsTable extends Migration
     {
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('sessiontasks');
+        Schema::dropIfExists('taskattempts');
     }
 }

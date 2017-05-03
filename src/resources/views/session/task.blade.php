@@ -24,7 +24,6 @@
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <ul>
-                                {{ $old }}
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -34,10 +33,6 @@
                     <div class="form-group">
                         <label for="query">Vastauksesi</label>
                         <textarea class="form-control" name="query" id="query" rows="5">
-                            @if(isset($error))
-                                testi¤"#%"%"¤#%
-                                {{$old}}
-                            @endif
                         </textarea>
                     </div>
                     <input type="submit" class="btn btn-primary form-control" value="Lähetä vastaus">
