@@ -73,11 +73,12 @@ class SessionTasklistController extends Controller
             $sessiontask->save();
             return back()->with('error','Kolme yritystä käytetty');
         }
+        $sess = Session::find($session);
+        $sess->sandboxedDB = new SandboxedDatabase($sess);
+
         try {
-
-            $sess = Session::find($session);
-            $sess->sandboxedDB = new SandboxedDatabase($sess);
-
+            // Ota tietokannan tämänhetkinen tilanne talteen
+            $sess->sandboxedDB->backupTables();
             $query = $sess->sandboxedDB->runSelect($request->input('query'), false); // false parametrina jos ajetaan käyttäjän kysely
             $answer = $sess->sandboxedDB->runSelect($task->answer, true);    // true parametrina jos tarkistetaan
             $taskattempt->last()->finished_at = Carbon::now();
@@ -90,11 +91,14 @@ class SessionTasklistController extends Controller
                 return back()->with('status','Oikein meni!');
             }
 
-            // TODO: Palauta edellinen tietokannan tilanne epäonnistuneen kyselyn jälkeen
+            // Palauta edellinen tietokannan tilanne epäonnistuneen kyselyn jälkeen
+            $sess->sandboxedDB->restoreTables();
 
             return back()->with('error' ,'Väärä vastaus');
         }
         catch (QueryException $e){
+            // Palautetaan edellinen tila
+            $sess->sandboxedDB->restoreTables();
             return back()->with('error','SQL-kysely virheellinen');
         }
     }
