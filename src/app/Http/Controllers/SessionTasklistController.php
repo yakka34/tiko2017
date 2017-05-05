@@ -50,8 +50,13 @@ class SessionTasklistController extends Controller
                 $sessiontask->finished_at = Carbon::now();
                 $sessiontask->save();
             }
-            // Palataan tehtävälistaan
-            return redirect()->route('session.show.tasklist', ['session_id' => $session])->with('status', 'Tehtävä suoritettu');
+            // Siirrytään seuraavaan tehtävään tai tehtävälistaan, jos tehtävä oli suoritettu oikein
+            if ($sessiontask->correct) {
+                return redirect($this->next($tasklist, $task, $session))->with('status', 'Tehtävä suoritettu oikein!');
+            } else {
+                // Siirrytään vastaussivulle, mikäli kaikki yritykset käytettiin ja tehtävä meni väärin
+                return redirect()->route('session.show.answer', ['session_id' => $session->id, 'tasklist_id'  => $tasklist->id, 'task_id' => $task->id]);
+            }
         }
 
         Taskattempt::firstOrCreate(['sessiontask_id' => $sessiontask->id, 'finished_at' => null]);
@@ -62,7 +67,19 @@ class SessionTasklistController extends Controller
             'task' => $task,
             'session' => $session->id,
         ]);
+    }
 
+    public function showAnswer($session, $tasklist, $task) {
+        $session = Session::find($session);
+        $tasklist = Tasklist::find($tasklist);
+        $task = Task::find($task);
+
+        return view('session.answer', [
+            'page_name' => 'Tehtävän vastaus',
+            'next' => $this->next($tasklist, $task, $session),
+            'task' => $task,
+            'session' => $session->id
+        ]);
     }
 
     public function answer(TaskAnswerRequest $request,$session,$tasklist,$task){
@@ -77,10 +94,21 @@ class SessionTasklistController extends Controller
         $sess = Session::find($session);
         $sess->sandboxedDB = new SandboxedDatabase($sess);
 
+        // Kyselyn täytyy päättyä puolipisteeseen ja avatut sulkeet on suljettava
+        $answerQuery = trim($request->input('query'));
+        if (substr($answerQuery, -1) != ';') {
+            return back()->with('error', 'Kyselyn täytyy päättyä puolipisteeseen!');
+        }
+        $openParenthesis = substr_count($answerQuery, '(');
+        $closeParenthesis = substr_count($answerQuery, ')');
+        if ($openParenthesis != $closeParenthesis) {
+            return back()->with('error', 'Kyselyssä on avoimia sulkeita');
+        }
+
         try {
             // Ota tietokannan tämänhetkinen tilanne talteen
             $sess->sandboxedDB->backupTables();
-            $query = $sess->sandboxedDB->runSelect($request->input('query'), false); // false parametrina jos ajetaan käyttäjän kysely
+            $query = $sess->sandboxedDB->runSelect($answerQuery, false); // false parametrina jos ajetaan käyttäjän kysely
             $answer = $sess->sandboxedDB->runSelect($task->answer, true);    // true parametrina jos tarkistetaan
             $taskattempt->last()->finished_at = Carbon::now();
             $taskattempt->last()->answer = $request->input('query');
@@ -103,7 +131,7 @@ class SessionTasklistController extends Controller
         catch (QueryException $e){
             // Palautetaan edellinen tila
             $sess->sandboxedDB->restoreTables();
-            return back()->with('error','SQL-kysely virheellinen');
+            return back()->with('error','SQL-kysely virheellinen: '.$e->getMessage());
         }
     }
 
