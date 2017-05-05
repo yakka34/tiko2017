@@ -14,8 +14,14 @@
 
         {{-- Jos käyttäjä voi suorittaa tehtäviä, listataan tehtävälistat --}}
         @if (Auth::user()->can('solve-task') and isset($tasklists))
-            <h3>Tehtävälistat</h3>
-            @include('home.tasklist')
+            <div>
+                <h3>Tehtävälistat</h3>
+                @include('home.tasklist')
+            </div>
+            <div>
+                <h3>Suoritukset</h3>
+                <p>Tarkastele suorituksiasi <a href="{{ route('stats') }}">täällä</a>.</p>
+            </div>
         @endif
 
     @else

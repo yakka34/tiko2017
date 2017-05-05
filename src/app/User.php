@@ -47,4 +47,12 @@ class User extends Authenticatable
     public function tasklists() {
         return $this->hasMany(Tasklist::class);
     }
+
+    public function sessions() {
+        return $this->hasMany(Session::class);
+    }
+
+    public function sessiontasks() {
+        return $this->hasMany(Sessiontask::class);
+    }
 }

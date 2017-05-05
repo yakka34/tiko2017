@@ -18,6 +18,8 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('/stats', 'UserStatsController@index')->name('stats');
+
 Route::get('/admin', 'AdminController@index')->name('admin');
 
 Route::get('/task','TaskController@createTask')->name('create.task');
