@@ -4,11 +4,11 @@ namespace App\Utils;
 
 
 use App\Session;
+use Exception;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Mockery\Exception;
 
 class SandboxedDatabase {
 
@@ -17,8 +17,11 @@ class SandboxedDatabase {
     private $tables = ['opiskelijat', 'kurssit', 'suoritukset'];
 
     public function __construct(Session $session) {
+        if (env('DB_TASK_CONNECTION', 'pgsql') == 'mysql') {
+            throw new Exception('Currently unsupported database management system MySQL');
+        }
         $this->session = $session;
-        $this->dbConn = DB::connection('task_sandbox_'.env('DB_TASK_CONNECTION', 'mysql'));
+        $this->dbConn = DB::connection('task_sandbox_'.env('DB_TASK_CONNECTION', 'pgsql'));
     }
 
     public function createTables() {
@@ -109,7 +112,7 @@ class SandboxedDatabase {
         $user = $this->session->user_id;
         $tasklist = $this->session->tasklist_id;
         $sessid = $this->session->id;
-        $dbType = env('DB_TASK_CONNECTION', 'mysql');
+        $dbType = env('DB_TASK_CONNECTION', 'pgsql');
         if ($dbType == 'mysql') {
             $this->dbConn->statement('SET FOREIGN_KEY_CHECKS=0');
         }
@@ -124,7 +127,7 @@ class SandboxedDatabase {
     }
 
     public function backupTables() {
-        if (env('DB_TASK_CONNECTION', 'mysql') == 'mysql') {
+        if (env('DB_TASK_CONNECTION', 'pgsql') == 'mysql') {
             throw new Exception('Currently unsupported database management system MySQL');
         }
         $user = env('DB_TASK_USERNAME', 'homestead');
@@ -144,6 +147,8 @@ class SandboxedDatabase {
         $out = [];
         exec($cmd, $out, $retval);
         if ($retval != 0) {
+            Log::debug('Command: '.$cmd);
+            Log::error(implode('\n', $out));
             throw new Exception('Database backup failed with error '.$retval.'!');
         }
     }

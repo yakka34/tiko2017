@@ -12,6 +12,19 @@
             </p>
         </div>
 
+        @if (Auth::user()->hasRole('teacher') || Auth::user()->hasRole('admin'))
+            <div>
+                <p>Tarkastele luomiesi tehtävälistojen suorittajien tietoja <a href="{{ route('admin') }}">täällä</a>.</p>
+            </div>
+            <div>
+                <h3>Raportit</h3>
+                <ul>
+                    <li>Foo</li>
+                    <li>Bar</li>
+                </ul>
+            </div>
+        @endif
+
         {{-- Jos käyttäjä voi suorittaa tehtäviä, listataan tehtävälistat --}}
         @if (Auth::user()->can('solve-task') and isset($tasklists))
             <div>

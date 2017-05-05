@@ -5,9 +5,22 @@
         <b><a href="{{ route('home') }}">&larr; Takaisin etusivulle</a></b>
     </div>
     <hr />
+
+    @if (Auth::user()->hasRole('teacher'))
+        <div class="alert alert-info">
+            <strong>Huomaa!</strong> Roolisi on opettaja, joten näet tässä vain ne opiskelijat, jotka ovat tehneet luomiasi tehtävälistoja.
+        </div>
+    @endif
+
     <ul>
-        @foreach($users as $user)
-            <li><a href="{{route('show',$user->id)}}">{{$user->name}}</a>
+        @forelse ($users as $user)
+            <li>
+                @if (Auth::user()->hasRole('admin'))
+                    <a href="{{route('show',$user->id)}}">{{$user->name}}</a>
+                @elseif (Auth::user()->hasRole('teacher'))
+                    {{-- Opettaja ei pääse editointisivulle, mutta voi nähdä niiden oppilaiden tiedot, jotka ovat tehneet hänen tehtävälistojaan --}}
+                    {{$user->name}}
+                @endif
                 <ul>
                     @if(isset($user->studentId))
                         <li>Opnro: {{$user->studentId}}</li>
@@ -33,6 +46,8 @@
                     @endif
                 </ul>
             </li>
-        @endforeach
+        @empty
+            <li>Ei opiskelijoita</li>
+        @endforelse
     </ul>
 @stop

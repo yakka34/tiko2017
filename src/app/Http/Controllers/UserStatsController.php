@@ -17,7 +17,7 @@ class UserStatsController extends Controller {
         // Hae suoritetut sessiot
         $completedSessions = Auth::user()->sessions()->whereNotNull('finished_at')->get();
 
-        return view('home.stats', [
+        return view('home.userstats', [
             'page_name' => 'Tilastoja',
             'completed_sessions' => $completedSessions
         ]);
