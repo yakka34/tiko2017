@@ -42,17 +42,18 @@ class SessionTasklistController extends Controller
         $tasklist = Tasklist::find($tasklist);
         $task = Task::find($task);
         $sessiontask = Sessiontask::firstOrCreate(['session_id' => $session->id, 'task_id' => $task->id]);
+
         if($sessiontask->correct || count(Taskattempt::where('sessiontask_id', $sessiontask->id)->get()) >= 3){
-            //TODO Estä tehtävän tekeminen käyttöliittymässä.
-            //TODO Mitä tehdä kun tehtävä on suoritettu tai yritykset käytetty?
-            return view('session.task',[
-                'page_name' => 'Sessio tehtävä',
-                'previous' => $this->previous($tasklist,$task,$session),
-                'next' => $this->next($tasklist,$task,$session),
-                'task' => $task,
-                'session' => $session->id,
-            ])->with('status','Tehtävä suoritettu');
+            // Tehtävä suoritettu hyväksytysti tai kaikki yritykset käytetty
+            // Merkataan tehtävä suoritetuksi, jos se ei ole jo
+            if ($sessiontask->finished_at == null) {
+                $sessiontask->finished_at = Carbon::now();
+                $sessiontask->save();
+            }
+            // Palataan tehtävälistaan
+            return redirect()->route('session.show.tasklist', ['session_id' => $session])->with('status', 'Tehtävä suoritettu');
         }
+
         Taskattempt::firstOrCreate(['sessiontask_id' => $sessiontask->id, 'finished_at' => null]);
         return view('session.task',[
             'page_name' => 'Sessio tehtävä',
@@ -71,7 +72,7 @@ class SessionTasklistController extends Controller
         if(count($taskattempt) >= 3 && $taskattempt->last()->finished_at != null){
             $sessiontask->finished_at = Carbon::now();
             $sessiontask->save();
-            return back()->with('error','Kolme yritystä käytetty');
+            return redirect()->route('session.show.tasklist', ['session_id' => $session])->with('error', 'Kolme yritystä käytetty!');
         }
         $sess = Session::find($session);
         $sess->sandboxedDB = new SandboxedDatabase($sess);
@@ -93,6 +94,9 @@ class SessionTasklistController extends Controller
 
             // Palauta edellinen tietokannan tilanne epäonnistuneen kyselyn jälkeen
             $sess->sandboxedDB->restoreTables();
+
+            $sessiontask->correct = false;
+            $sessiontask->save();
 
             return back()->with('error' ,'Väärä vastaus');
         }

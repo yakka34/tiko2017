@@ -13,16 +13,13 @@
             </div>
         </div>
 
-        <h4>Tehtävät</h4>
-        <ul>
-            @foreach($tasklist->tasks as $task)
-                <li><a href="{{route('show.task',[$tasklist->id, $task->id])}}">Tehtävä {{ $task->id }}</a> </li>
-            @endforeach
-        </ul>
-        <!-- TODO:Lopeta sessio vain jos tehtävät on suoritettu joka hylätysti tai onnistuneesti -->
-        @if(isset($session))
-            <a class="btn btn-primary" href="{{route('session.stop',$session)}}">Lopeta sessio</a>
-        @endif
+        <div>
+            Tämä tehtävälista sisältää {{ count($tasklist->tasks) }} tehtävä{{ count($tasklist->tasks) > 1 ? 'ä' : 'n' }}.
+        </div>
+
+        <div>
+            <a class="btn btn-primary" href="{{ route('session.start', $tasklist->id) }}">Aloita tehtäväsessio</a>
+        </div>
     @endif
 
 @stop
