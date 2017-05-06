@@ -22,6 +22,8 @@
                     <li><a href="{{ route('report.r1') }}">R1 - Suoritettujen sessioiden tiedot</a></li>
                     <li><a href="{{ route('report.r2') }}">R2 - Tehtävälistakohtainen suoritusaika</a></li>
                     <li><a href="{{ route('report.r3') }}">R3 - Tehtävälistakohtainen yhteenveto</a></li>
+                    <li><a href="{{ route('report.r4') }}">R4 - Tehtävälistaus vaikeusjärjestyksessä</a></li>
+                    <li><a href="{{ route('report.r5') }}">R5 - Tyyppikohtaiset tilastot</a></li>
                 </ul>
             </div>
         @endif

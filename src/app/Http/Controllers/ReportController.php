@@ -151,4 +151,57 @@ class ReportController extends Controller {
         ]);
     }
 
+    public function r5() {
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->hasRole('teacher')) {
+            return back()->with('error', 'Ei oikeutta!');
+        }
+
+        $types = [
+            'select', 'update', 'insert', 'delete'
+        ];
+
+        $entries = [];
+        foreach ($types as $type) {
+            $entries[$type] = [
+                'avg_time' => $this->getAvgAttemptTimeForType($type),
+                'avg_attempts' => $this->getAvgAttemptCountForType($type)
+            ];
+        }
+
+        return view('reports.r5', [
+            'page_name' => 'Raportti 5 - Tyyppikohtaiset tilastot',
+            'data' => $entries
+        ]);
+    }
+
+    private function getAvgAttemptTimeForType($type) {
+        $avgTime = DB::table('taskattempts')
+            ->select(DB::raw('AVG(finished_at-created_at)'))
+            ->whereIn('sessiontask_id',
+                DB::table('sessiontasks')
+                    ->select('id')
+                    ->whereIn('task_id',
+                        DB::table('tasks')
+                            ->select('id')
+                            ->where('type', $type)))
+            ->first()->avg;
+        if ($avgTime == null) return '00:00:00.0';
+        return $avgTime;
+    }
+
+    private function getAvgAttemptCountForType($type) {
+        $tasks = Task::where('type', $type)->get();
+        $avgAttempts = 0.0;
+        $tryCount = 0;
+        foreach ($tasks as $task) {
+            $sessiontasks = $task->sessiontasks()->get();
+            foreach ($sessiontasks as $sessiontask) {
+                $avgAttempts += $sessiontask->taskattempts()->count();
+            }
+            $tryCount += count($sessiontasks);
+        }
+        if ($tryCount == 0) return 0;
+        return round($avgAttempts / $tryCount, 2);
+    }
+
 }
