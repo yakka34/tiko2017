@@ -19,12 +19,12 @@
         },
 
         mounted() {
-            axios.get('/user/tasks').then(resp => this.tasks = resp.data);
+            axios.get(window.Laravel.base_url+'/user/tasks').then(resp => this.tasks = resp.data);
         },
 
         methods: {
             taskUrl(id) {
-                return '/task/' + id + '/edit';
+                return window.Laravel.base_url+'/task/'+id+'/edit';
             }
         }
     }

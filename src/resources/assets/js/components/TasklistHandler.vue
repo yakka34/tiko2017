@@ -108,12 +108,12 @@
 
         mounted() {
             // Hae tehtävät
-            axios.get('/user/tasks').then(resp => {
+            axios.get(window.Laravel.base_url+'/user/tasks').then(resp => {
                 this.tasks = resp.data;
                 this.availableTasks = resp.data;
             });
             // Hae tehtävälistat
-            axios.get('/user/tasklists').then(resp => this.tasklists = resp.data);
+            axios.get(window.Laravel.base_url+'/user/tasklists').then(resp => this.tasklists = resp.data);
         },
 
         methods: {
@@ -139,7 +139,7 @@
             },
 
             saveTasklist() {
-                axios.post('/missioncontrol/tasklist/create', {
+                axios.post(window.Laravel.base_url+'/missioncontrol/tasklist/create', {
                     description: this.description,
                     tasks: _.map(this.selectedTasks, 'id')
                 })
@@ -159,7 +159,7 @@
             },
 
             tasklistUrl(id) {
-                return '/tasklist/' + id;
+                return window.Laravel.base_url+'/tasklist/' + id;
             },
 
             updateDescription(content) {

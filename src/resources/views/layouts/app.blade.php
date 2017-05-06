@@ -17,6 +17,7 @@
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'base_url' => url('/')
         ]) !!};
     </script>
     <script src="//cloud.tinymce.com/stable/tinymce.min.js"></script>
