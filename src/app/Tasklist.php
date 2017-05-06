@@ -16,6 +16,10 @@ class Tasklist extends Model
         return $this->belongsToMany(Task::class);
     }
 
+    public function sessions() {
+        return $this->hasMany(Session::class);
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

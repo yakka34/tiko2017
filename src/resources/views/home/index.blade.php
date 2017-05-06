@@ -19,8 +19,8 @@
             <div>
                 <h3>Raportit</h3>
                 <ul>
-                    <li>Foo</li>
-                    <li>Bar</li>
+                    <li><a href="{{ route('report.r1') }}">R1 - Suoritettujen sessioiden tiedot</a></li>
+                    <li><a href="{{ route('report.r2') }}">R2 - Tehtävälistakohtainen suoritusaika</a></li>
                 </ul>
             </div>
         @endif

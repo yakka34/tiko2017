@@ -22,6 +22,9 @@ Route::get('/stats', 'UserStatsController@index')->name('stats');
 
 Route::get('/admin', 'AdminController@index')->name('admin');
 
+Route::get('/report/r1', 'ReportController@r1')->name('report.r1');
+Route::get('/report/r2', 'ReportController@r2')->name('report.r2');
+
 Route::get('/task','TaskController@createTask')->name('create.task');
 Route::get('/task/{id}/edit','TaskController@edit')->name('edit.task');
 Route::post('/task/{id}/edit','TaskController@update')->name('update.task');
