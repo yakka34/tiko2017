@@ -38,7 +38,7 @@
                             <li v-for="task in selectedTasks">
                                 Tehtävä {{task.id}}
                                 <a v-on:click.stop="removeSelectedTask(task.id)" href="#!" title="Poista valinta">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    &cross;
                                 </a>
                             </li>
                         </ul>
