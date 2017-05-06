@@ -61,4 +61,43 @@ class ReportController extends Controller {
         ]);
     }
 
+    public function r3() {
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->hasRole('teacher')) {
+            return back()->with('error', 'Ei oikeutta!');
+        }
+
+        $entries = [];
+        $tasklists = Tasklist::all();
+
+        foreach ($tasklists as $tasklist) {
+            $entry = [
+                'tasklist_id' => $tasklist->id
+            ];
+            $taskEntries = [];
+            $tasks = $tasklist->tasks()->get();
+            foreach ($tasks as $task) {
+                $sessiontasks = $task->sessiontasks();
+                $totalTaskCount = $sessiontasks->get()->count();
+                $correctTaskCount = $sessiontasks->where('correct', true)->count();
+
+                $successPercentage = round((floatval($correctTaskCount) / floatval($totalTaskCount)) * 100.0, 2);
+                $avgTimeTook = DB::table('sessiontasks')->select(DB::raw('AVG(finished_at-created_at)'))->where('task_id', $task->id)->first()->avg;
+
+                $taskEntries[] = [
+                    'task_id' => $task->id,
+                    'success_per' => $successPercentage,
+                    'average_time' => $avgTimeTook
+                ];
+            }
+            $entry['tasks'] = $taskEntries;
+            $entries[] = $entry;
+        }
+
+        return view('reports.r3', [
+            'page_name' => 'Raportti 3 - Tehtävälistakohtainen yhteenveto',
+            'data' => $entries
+        ]);
+
+    }
+
 }

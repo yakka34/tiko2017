@@ -24,6 +24,7 @@ Route::get('/admin', 'AdminController@index')->name('admin');
 
 Route::get('/report/r1', 'ReportController@r1')->name('report.r1');
 Route::get('/report/r2', 'ReportController@r2')->name('report.r2');
+Route::get('/report/r3', 'ReportController@r3')->name('report.r3');
 
 Route::get('/task','TaskController@createTask')->name('create.task');
 Route::get('/task/{id}/edit','TaskController@edit')->name('edit.task');

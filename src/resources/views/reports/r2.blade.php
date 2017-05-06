@@ -9,7 +9,7 @@
 
     {{-- Tehtävälistakohtainen suoritusaikaraportti (tehtävänannossa R2) --}}
 
-    <div class="help-block">Ajat formaatissa <em>hh:mm:ss</em></div>
+    <div class="help-block">Ajat formaatissa <em>hh:mm:ss.fff</em></div>
 
     <table class="table table-striped table-condensed table-bordered">
         <thead>
