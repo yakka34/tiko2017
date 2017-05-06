@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Session;
+use App\Task;
 use App\Tasklist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -97,7 +98,57 @@ class ReportController extends Controller {
             'page_name' => 'Raportti 3 - Tehtävälistakohtainen yhteenveto',
             'data' => $entries
         ]);
+    }
 
+    public function r4() {
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->hasRole('teacher')) {
+            return back()->with('error', 'Ei oikeutta!');
+        }
+
+        $entries = [];
+
+        $taskTimes = DB::table('tasks')
+            ->select(DB::raw('tasks.id AS task_id, AVG(sessiontasks.finished_at-sessiontasks.created_at) AS avg'))
+            ->join('sessiontasks', 'tasks.id', '=', 'sessiontasks.task_id')
+            ->groupBy('tasks.id')
+            ->orderByDesc('avg')
+            ->get();
+
+        foreach ($taskTimes as $row) {
+            // Laske montako yritystä tehtävään on keskimäärin tarvittu ennen oikeaa tulosta
+            $task = Task::find($row->task_id);
+            $sessiontasks = $task->sessiontasks()->get();
+            $avgAttempts = 0.0;
+            $totalFailureCount = 0.0;
+            foreach ($sessiontasks as $sessiontask) {
+                if ($sessiontask->correct) {
+                    $avgAttempts += $sessiontask->taskattempts()->count();
+                } else if (!$sessiontask->correct && $sessiontask->taskattempts()->count() == 3) {
+                    $totalFailureCount += 1;
+                }
+            }
+            if (count($sessiontasks) > 0) {
+                $avgAttempts /= floatval(count($sessiontasks));
+            }
+
+            // Laske prosenttiosuus siitä, kuinka usein tehtävä jäi kokonaan ratkaisematta
+            $totalFailurePercentage = 0;
+            if ($totalFailureCount > 0) {
+                $totalFailurePercentage = round(($totalFailureCount / count($sessiontasks)) * 100, 2);
+            }
+
+            $entries[] = [
+                'task_id' => $task->id,
+                'avg_time' => $row->avg,
+                'avg_attempts' => $avgAttempts,
+                'failure_per' => $totalFailurePercentage
+            ];
+        }
+
+        return view('reports.r4', [
+            'page_name' => 'Raportti 4 - Tehtävälistaus vaikeusjärjestyksessä',
+            'data' => $entries
+        ]);
     }
 
 }
