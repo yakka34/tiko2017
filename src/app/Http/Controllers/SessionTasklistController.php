@@ -61,7 +61,7 @@ class SessionTasklistController extends Controller
 
         Taskattempt::firstOrCreate(['sessiontask_id' => $sessiontask->id, 'finished_at' => null]);
         return view('session.task',[
-            'page_name' => 'Sessio tehtävä',
+            'page_name' => 'Sessiotehtävä',
             'previous' => $this->previous($tasklist,$task,$session),
             'next' => $this->next($tasklist,$task,$session),
             'task' => $task,

@@ -4,11 +4,11 @@
 
         @if (isset($session))
             <a href="{{ route('session.show.tasklist', $session) }}">&larr; Takaisin tehtävälistaan</a>
-            <div>
+            {{--<div>
                 <a href="{{ $previous }}">&larr; Edellinen</a>
                 |
                 <a href="{{ $next }}">Seuraava &rarr; </a>
-            </div>
+            </div>--}}
         @endif
         <h3>Tehtävä {{$task->id}}</h3>
         <div class="panel panel-default">
