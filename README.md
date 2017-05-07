@@ -6,5 +6,5 @@ Vaihe 1:
 -Dokumentaatio ja suunnittelu
 
 Vaihe 2:
--Toteutus
-Coming soon™
+-Toteutus:
+https://zini.im/tiko/
